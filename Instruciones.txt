@@ -1,0 +1,5 @@
+Iniciar Xampp (Apache y Mysql)
+
+Importar la base de datos desde budgetsoft.sql
+
+Copiar la carpeta sitio web a la carpeta xamp>htdocs
