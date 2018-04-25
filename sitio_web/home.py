@@ -5,6 +5,7 @@ import mysql.connector
 
 print("Content-Type: text/html\n")
 
+#conexion a la base de datos
 db= mysql.connector.connect(user='root', password='',
                               host='127.0.0.1',
                               database='budgetsoft')
@@ -12,6 +13,7 @@ db= mysql.connector.connect(user='root', password='',
 form = cgi.FieldStorage() # se instancia solo una vez
 sesion = form.getfirst('Sesion','empty')
 
+#Titulo y estilo
 print("""
 	<html>
 	<head>
@@ -20,44 +22,60 @@ print("""
 	<link href="estilo.css" rel="stylesheet" type="text/css" media="screen">
 	</head>	
 
-	<body>
+"""
+)    	
 
+#Encabezado de pagina
+print ("""
+	<body>
 	<header id="header">
 	<img src = "images/logo.jpg" width="70" height="70" alt="Imagen no encontrada">
 	<h1>BUDGETSOFT</h1>
 	</header>
+"""
+)
 
+
+#Barra de navegacion
+print ("""
 	<div id="sidebar">
 	<h1>Navegacion</h1>
 	<nav id="nav">
-	<ul>
-		<li class="current_page_item"><a href="home.py?Sesion=
-"""
-) 
-
+		<ul>
+	"""
+)
+print('<li class="current_page_item"><a href="home.py?Sesion=')
 print(sesion + '">Inicio</a></li>')		
+print('<li><a href="balance.py?Sesion=')
+print(sesion + '">Balance</a></li>')
+print('<li><a href="ingresos.py?Sesion=')
+print(sesion + '">Ingresos</a></li>')
+print('<li><a href="gastos.py?Sesion=')
+print(sesion + '">Gastos</a></li>')
+print('<li><a href="cuenta.py?Sesion=')
+print(sesion + '">Mi cuenta</a></li>')	
+print('<li><a href="login.py">Cerrar sesion</a></li>')
+print ("""
+		</ul>
+		</nav>
+		</div>
+	"""
+)		
 
+#Buscamos el nombre del usuario
 cursor=db.cursor()
 sql = "SELECT * FROM `usuarios` WHERE `usuario` LIKE '%s'"  %  (sesion)
 cursor.execute(sql)
 resultado=cursor.fetchall()
-
-
-print("""
-		<li><a href="login.py">Balance</a></li>
-		<li><a href="login.py">Ingresos</a></li>
-		<li><a href="login.py">Egresos</a></li>
-		<li><a href="login.py">Configuracion</a></li>
-		<li><a href="login.py">Cerrar sesion</a></li>
-	</ul>
-	</nav>
-	</div>
+ 
+ 
+#Mensaje de bienvenida
+print ("""
 	
 	<div id="panel2">
 		<h2>Bienvenido, 
 """
-) 
-
+)
 print(resultado[0][3] + '.</h2>')
 		
 		

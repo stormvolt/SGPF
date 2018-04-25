@@ -5,6 +5,7 @@ import mysql.connector
 
 print("Content-Type: text/html\n")
 
+#conexion a la base de datos
 db= mysql.connector.connect(user='root', password='',
                               host='127.0.0.1',
                               database='budgetsoft')
@@ -15,6 +16,7 @@ password = form.getfirst('Password','empty')
 nombre = form.getfirst('Nombre','empty')
 email = form.getfirst('Email','empty')
 
+#Titulo y estilo
 print ("""
     <html>
 	<head>
@@ -25,6 +27,7 @@ print ("""
 """
 )    	
 
+#Encabezado de pagina
 print ("""
 	<body>
 
@@ -33,6 +36,11 @@ print ("""
 	<h1>BUDGETSOFT</h1>
 	</header>
 
+"""
+)
+
+#Barra de navegacion
+print ("""
 	<div id="sidebar">
 	<h1>Navegacion</h1>
 	<nav id="nav">
@@ -47,13 +55,13 @@ print ("""
 			<h2>Registrarse</h2>
 			<form action="signup.py" method="post">
 			<b>Usuario:</b>
-			<input type="text"  name="Usuario"> <br><br>
+			<input type="text"  name="Usuario" required> <br><br>
 			<b>Password:</b>
-			<input type="password"  name="Password"> <br><br>
+			<input type="password"  name="Password" required> <br><br>
 			<b>Nombre:</b>
-			<input type="text"  name="Nombre"> <br><br>
+			<input type="text"  name="Nombre" required> <br><br>
 			<b>Email:</b>
-			<input type="text"  name="Email"> <br><br>
+			<input type="email"  name="Email" required> <br><br>
 			<br>
 			<input type="submit" value="Registrarse"> <br>
 			</form>			
@@ -61,14 +69,16 @@ print ("""
 """
 )
 
+#Verficamos que no exista otro suario igual en la base de datos
 cursor=db.cursor()
 sql = "SELECT * FROM `usuarios` WHERE `usuario` LIKE '%s'" % (usuario)
 cursor.execute(sql)
 resultado=cursor.fetchall()
 cursor.close()
 
-sql2 = "INSERT INTO `usuarios` VALUES (null,'%s','%s','%s','%s')" % (usuario, password, nombre, email)
 
+#Insertamos el nuevo registro, si no es un usuario ya existente
+sql2 = "INSERT INTO `usuarios` VALUES (null,'%s','%s','%s','%s')" % (usuario, password, nombre, email)
 if(len(resultado)!=0):
 	print('Ese ususario ya se halla registrado.')
 else:

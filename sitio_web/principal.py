@@ -1,16 +1,20 @@
 #!C:\Python27\python
 print("Content-Type: text/html\n")
 
+#Titulo y estilo
 print("""
 	<html>
 	<head>
 	<title>BUDGETSOFT</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" >
 	<link href="estilo.css" rel="stylesheet" type="text/css" media="screen">
-	</head>	
+	</head>
+"""
+)
 
+#Encabezado de pagina
+print ("""
 	<body>
-
 	<header id="header">
 	<img src = "images/logo.jpg" width="70" height="70" alt="Imagen no encontrada">
 	<h1>BUDGETSOFT</h1>
@@ -26,8 +30,12 @@ print("""
 	</ul>
 	</nav>
 	</div>
-	
-	<div id="panel2">
+	"""
+)
+    	
+#Descripcion del sitio
+print ("""
+		<div id="panel2">
 		<h2>Inicio</h2>
 		<img src = "images/inicio.jpg" width="50%" height="50%" alt="Imagen no encontrada">
 		<br>
