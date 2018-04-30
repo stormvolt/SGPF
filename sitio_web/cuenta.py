@@ -1,16 +1,14 @@
 #!C:\Python27\python
 import cgi
 import cgitb; cgitb.enable()
-import mysql.connector
+from conect import *
 
 print("Content-Type: text/html\n")
 
 #conexion a la base de datos
-db= mysql.connector.connect(user='root', password='',
-                              host='127.0.0.1',
-                              database='budgetsoft')
+db= conectar()
 							  
-form = cgi.FieldStorage() # se instancia solo una vez
+form = cgi.FieldStorage() 
 
 sesion = form.getfirst('Sesion','empty')
 password = form.getfirst('Password','empty')
