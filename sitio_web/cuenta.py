@@ -14,6 +14,7 @@ form = cgi.FieldStorage() # se instancia solo una vez
 
 sesion = form.getfirst('Sesion','empty')
 password = form.getfirst('Password','empty')
+password_check = form.getfirst('Password_check','empty')
 nombre = form.getfirst('Nombre','empty')
 email = form.getfirst('Email','empty')
 
@@ -32,10 +33,13 @@ print ("""
 #Se ejecuta la actualizacion de datos
 sql2 = "UPDATE `usuarios` SET `password`='%s',`nombre`='%s',`email`='%s' WHERE `usuario` LIKE '%s'" % (password, nombre, email, sesion)
 if(password!='empty'):
-	actualizar = db.cursor()
-	actualizar.execute(sql2)
-	db.commit()
-	actualizar.close()
+	if(password==password_check):
+		actualizar = db.cursor()
+		actualizar.execute(sql2)
+		db.commit()
+		actualizar.close()
+	else:
+		print('Los passwords ingresados no coinciden.')
 	
 
 #Encabezado de pagina
@@ -98,6 +102,9 @@ print(resultado[0][1] + '> <br><br>')
 print('<b>Password:</b>')
 print('<input type="password"  name="Password" required value=')
 print(resultado[0][2] + '> <br><br>')
+print('&nbsp'*18)
+print('<input type="password"  name="Password_check" placeholder="Confirmar password" required value="')
+print(resultado[0][2] +  '"> <br><br>')
 print('<b>Nombre:</b>')
 print('<input type="text"  name="Nombre" required value="')
 print(resultado[0][3] +  '"> <br><br>')
@@ -113,9 +120,12 @@ print ("""
 """
 )
 
-#Mensaje de verificacion
+#Mensajes de verificacion
 if(password!='empty'):
-	print('<br> Datos actualizados. <br>')		
+	if(password!=password_check):
+		print('<br> Los passwords ingresados no coinciden. <br>')
+	else:
+		print('<br> Datos actualizados. <br>')
 
 
 		

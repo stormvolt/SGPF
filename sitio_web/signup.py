@@ -13,6 +13,7 @@ db= mysql.connector.connect(user='root', password='',
 form = cgi.FieldStorage() # se instancia solo una vez
 usuario = form.getfirst('Usuario','empty')
 password = form.getfirst('Password','empty')
+password_check = form.getfirst('Password_check','empty')
 nombre = form.getfirst('Nombre','empty')
 email = form.getfirst('Email','empty')
 
@@ -51,21 +52,23 @@ print ("""
 		</ul>
 		</nav>
 		</div>
+"""
+)
+
+
+#Formulario de registro
+print ("""
 		<div id="panel2">
 			<h2>Registrarse</h2>
 			<form action="signup.py" method="post">
-			<b>Usuario:</b>
-			<input type="text"  name="Usuario" required> <br><br>
-			<b>Password:</b>
-			<input type="password"  name="Password" required> <br><br>
-			<b>Nombre:</b>
-			<input type="text"  name="Nombre" required> <br><br>
-			<b>Email:</b>
-			<input type="email"  name="Email" required> <br><br>
+			<input type="text"  name="Usuario" placeholder="Usuario" required> <br><br>
+			<input type="password"  name="Password" placeholder="Password" required> <br><br>
+			<input type="password"  name="Password_check" placeholder="Confirmar password" required> <br><br>
+			<input type="text"  name="Nombre" placeholder="Nombre" required> <br><br>
+			<input type="email"  name="Email" placeholder="Email" required> <br><br>
 			<br>
 			<input type="submit" value="Registrarse"> <br>
-			</form>			
-
+			</form>
 """
 )
 
@@ -80,16 +83,18 @@ cursor.close()
 #Insertamos el nuevo registro, si no es un usuario ya existente
 sql2 = "INSERT INTO `usuarios` VALUES (null,'%s','%s','%s','%s')" % (usuario, password, nombre, email)
 if(len(resultado)!=0):
-	print('Ese ususario ya se halla registrado.')
+	print('<br> Ese ususario ya se halla registrado. <br>')
 else:
 	if(usuario!='empty'):
-		insertar = db.cursor()
-		number_of_rows = insertar.execute(sql2)
-		if(number_of_rows!=0):
-			print('<br> Usuario registrado correctamente. <br>')
-		db.commit()
-		insertar.close()
-		
+		if(password==password_check):
+			insertar = db.cursor()
+			number_of_rows = insertar.execute(sql2)
+			if(number_of_rows!=0):
+				print('<br> Usuario registrado correctamente. <br>')
+			db.commit()
+			insertar.close()
+		else:
+			print('<br> Los passwords ingresados no coinciden. <br>')		
 	else:
 		print('<br> Ingrese un usuario. <br>')
 
