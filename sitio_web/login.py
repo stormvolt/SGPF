@@ -11,7 +11,7 @@ usuario = form.getfirst('Usuario','empty')
 password = form.getfirst('Password','empty')
 
 #Se autentifican los datos proporcionados
-correcto = iniciar_sesion(usuario, password)
+validar = ingresar(usuario, password)
 
 #Titulo y estilo
 print ("""
@@ -25,7 +25,7 @@ print ("""
 )    	
 
 #Iniciar sesion
-if (correcto):
+if (validar):
 	print('<META HTTP-EQUIV="REFRESH" CONTENT="0;URL=home.py?Sesion=')
 	print(usuario + '">') 
 
@@ -72,9 +72,9 @@ print ("""
 #comprobamos si se ingreso un usuario valido
 if(usuario=='empty'):
 	print('<br> Ingrese un usuario. <br>')
-elif(not correcto):
+elif(not validar):
 	print("""
-		<br>Usuario no registrado o datos incorrectos <br>
+		<br>Datos incorrectos <br>
 	"""
 	)		
 

@@ -9,7 +9,7 @@ def conectar():
 
 	
 #Verifica que los datos proporcionados para iniciar sesion son correctos
-def iniciar_sesion(usuario, password):
+def ingresar(usuario, password):
 	db = conectar()
 	cursor = db.cursor()
 	argumentos = (usuario, password, False)
