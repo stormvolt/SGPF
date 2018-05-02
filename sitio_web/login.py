@@ -1,24 +1,17 @@
 #!C:\Python27\python
 import cgi
 import cgitb; cgitb.enable()
-from conect import *
+from conect import * #conexion y funciones con la base de datos
 
 print("Content-Type: text/html\n")
 
-#conexion a la base de datos
-db= conectar()
-							  
+#Variables del formulario Iniciar sesion							  
 form = cgi.FieldStorage() 
 usuario = form.getfirst('Usuario','empty')
 password = form.getfirst('Password','empty')
 
-cursor=db.cursor()
-
-sql = "SELECT * FROM `usuarios` WHERE `usuario` LIKE '%s' AND `password` LIKE '%s'" % (usuario,password)
-
-cursor.execute(sql)
-resultado=cursor.fetchall()
-cursor.close()
+#Se autentifican los datos proporcionados
+correcto = iniciar_sesion(usuario, password)
 
 #Titulo y estilo
 print ("""
@@ -32,7 +25,7 @@ print ("""
 )    	
 
 #Iniciar sesion
-if(len(resultado)!=0):
+if (correcto):
 	print('<META HTTP-EQUIV="REFRESH" CONTENT="0;URL=home.py?Sesion=')
 	print(usuario + '">') 
 
@@ -46,7 +39,6 @@ print ("""
 	</header>
 """
 )  
-
 
 #Barra de navegacion
 print ("""
@@ -80,13 +72,11 @@ print ("""
 #comprobamos si se ingreso un usuario valido
 if(usuario=='empty'):
 	print('<br> Ingrese un usuario. <br>')
-elif(len(resultado)==0):
+elif(not correcto):
 	print("""
 		<br>Usuario no registrado o datos incorrectos <br>
 	"""
-	)
-
-		
+	)		
 
 print ("""
 	<br>

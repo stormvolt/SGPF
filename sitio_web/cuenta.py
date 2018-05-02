@@ -1,15 +1,12 @@
 #!C:\Python27\python
 import cgi
 import cgitb; cgitb.enable()
-from conect import *
+from conect import * #conexion y funciones con la base de datos
 
 print("Content-Type: text/html\n")
 
-#conexion a la base de datos
-db= conectar()
-							  
-form = cgi.FieldStorage() 
-
+#Variables del formulario Modificar datos
+form = cgi.FieldStorage()
 sesion = form.getfirst('Sesion','empty')
 password = form.getfirst('Password','empty')
 password_check = form.getfirst('Password_check','empty')
@@ -29,13 +26,9 @@ print ("""
 )
 
 #Se ejecuta la actualizacion de datos
-sql2 = "UPDATE `usuarios` SET `password`='%s',`nombre`='%s',`email`='%s' WHERE `usuario` LIKE '%s'" % (password, nombre, email, sesion)
 if(password!='empty'):
 	if(password==password_check):
-		actualizar = db.cursor()
-		actualizar.execute(sql2)
-		db.commit()
-		actualizar.close()
+		actualizar_datos(sesion, password, nombre, email)
 	else:
 		print('Los passwords ingresados no coinciden.')
 	
@@ -78,15 +71,9 @@ print ("""
 )
 
 #Recuperamos los datos del usuario
-cursor=db.cursor()
-sql = "SELECT * FROM `usuarios` WHERE `usuario` LIKE '%s'" % (sesion)
-cursor.execute(sql)
-resultado=cursor.fetchall()
-cursor.close()
-
-
+datos = datos_personales(sesion)
     	
-#Edicion de datos
+#Formulario de edicion de datos
 print ("""
 		<div id="panel2">
 			<h2>Mis datos</h2>
@@ -96,19 +83,19 @@ print('<form action="cuenta.py?Sesion=')
 print(sesion + '" method="post">')
 print('<b>Usuario:</b>')
 print('<input type="text"  name="Usuario" disabled required value=')
-print(resultado[0][1] + '> <br><br>')
+print(datos[0][1] + '> <br><br>')
 print('<b>Password:</b>')
 print('<input type="password"  name="Password" required value=')
-print(resultado[0][2] + '> <br><br>')
+print(datos[0][2] + '> <br><br>')
 print('&nbsp'*18)
 print('<input type="password"  name="Password_check" placeholder="Confirmar password" required value="')
-print(resultado[0][2] +  '"> <br><br>')
+print(datos[0][2] +  '"> <br><br>')
 print('<b>Nombre:</b>')
 print('<input type="text"  name="Nombre" required value="')
-print(resultado[0][3] +  '"> <br><br>')
+print(datos[0][3] +  '"> <br><br>')
 print('<b>Email:</b>')
 print('<input type="email"  name="Email" required value=')
-print(resultado[0][4] + '> <br><br>')				
+print(datos[0][4] + '> <br><br>')				
 print ("""
 			
 			<br>
@@ -124,8 +111,6 @@ if(password!='empty'):
 		print('<br> Los passwords ingresados no coinciden. <br>')
 	else:
 		print('<br> Datos actualizados. <br>')
-
-
 		
 
 print ("""	
@@ -134,4 +119,4 @@ print ("""
 	</body>
     </html>
 """
-)    
+)

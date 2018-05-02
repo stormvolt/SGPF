@@ -1,13 +1,11 @@
 #!C:\Python27\python
 import cgi
 import cgitb; cgitb.enable()
-from conect import *
+from conect import * #conexion y funciones con la base de datos
 
 print("Content-Type: text/html\n")
 
-#conexion a la base de datos
-db= conectar()
-							  
+#Variables de la sesion iniciada
 form = cgi.FieldStorage() 
 sesion = form.getfirst('Sesion','empty')
 
@@ -61,10 +59,7 @@ print ("""
 )		
 
 #Buscamos el nombre del usuario
-cursor=db.cursor()
-sql = "SELECT * FROM `usuarios` WHERE `usuario` LIKE '%s'"  %  (sesion)
-cursor.execute(sql)
-resultado=cursor.fetchall()
+datos = datos_personales(sesion)
  
  
 #Mensaje de bienvenida
@@ -74,7 +69,7 @@ print ("""
 		<h2>Bienvenido, 
 """
 )
-print(resultado[0][3] + '.</h2>')
+print(datos[0][3] + '.</h2>')
 		
 		
 print("""

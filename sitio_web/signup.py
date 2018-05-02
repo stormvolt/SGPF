@@ -1,13 +1,11 @@
 #!C:\Python27\python
 import cgi
 import cgitb; cgitb.enable()
-from conect import *
+from conect import * #conexion y funciones con la base de datos
 
 print("Content-Type: text/html\n")
 
-#conexion a la base de datos
-db= conectar()
-							  
+#Variables del formulario Iniciar sesion
 form = cgi.FieldStorage() 
 usuario = form.getfirst('Usuario','empty')
 password = form.getfirst('Password','empty')
@@ -53,7 +51,6 @@ print ("""
 """
 )
 
-
 #Formulario de registro
 print ("""
 		<div id="panel2">
@@ -70,27 +67,18 @@ print ("""
 """
 )
 
-#Verficamos que no exista otro suario igual en la base de datos
-cursor=db.cursor()
-sql = "SELECT * FROM `usuarios` WHERE `usuario` LIKE '%s'" % (usuario)
-cursor.execute(sql)
-resultado=cursor.fetchall()
-cursor.close()
-
+#Verficamos que no exista otro usuario igual en la base de datos
+datos = datos_personales(usuario)
 
 #Insertamos el nuevo registro, si no es un usuario ya existente
-sql2 = "INSERT INTO `usuarios` VALUES (null,'%s','%s','%s','%s')" % (usuario, password, nombre, email)
-if(len(resultado)!=0):
+if(len(datos)!=0):
 	print('<br> Ese ususario ya se halla registrado. <br>')
 else:
 	if(usuario!='empty'):
 		if(password==password_check):
-			insertar = db.cursor()
-			number_of_rows = insertar.execute(sql2)
-			if(number_of_rows!=0):
+			num_inserciones = nuevo_usuario(usuario,password,nombre,email)
+			if(num_inserciones != 0):
 				print('<br> Usuario registrado correctamente. <br>')
-			db.commit()
-			insertar.close()
 		else:
 			print('<br> Los passwords ingresados no coinciden. <br>')		
 	else:
