@@ -20,7 +20,7 @@ def ingresar(usuario, password):
 	
 
 #Busca los datos personales del usuario
-def datos_personales(usuario): 
+def cargar_informacion_usuario(usuario): 
 	db = conectar()
 	cursor = db.cursor()
 	argumentos = (usuario,)
@@ -32,7 +32,7 @@ def datos_personales(usuario):
 
 	
 #Inserta un nuevo usuario en el sistema
-def nuevo_usuario(usuario, password, nombre, email):
+def agregar_usuario(usuario, password, nombre, email):
 	db = conectar()
 	cursor = db.cursor()
 	argumentos = (usuario, password, nombre, email)

@@ -60,6 +60,8 @@ print('<li><a href="ingresos.py?Sesion=')
 print(sesion + '">Ingresos</a></li>')
 print('<li><a href="gastos.py?Sesion=')
 print(sesion + '">Gastos</a></li>')
+print('<li><a href="metas.py?Sesion=')
+print(sesion + '">Metas</a></li>')
 print('<li class="current_page_item"><a href="cuenta.py?Sesion=')
 print(sesion + '">Mi cuenta</a></li>')	
 print('<li><a href="login.py">Cerrar sesion</a></li>')
@@ -71,7 +73,7 @@ print ("""
 )
 
 #Recuperamos los datos del usuario
-datos = datos_personales(sesion)
+datos = cargar_informacion_usuario(sesion)
     	
 #Formulario de edicion de datos
 print ("""

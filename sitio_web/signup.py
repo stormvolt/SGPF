@@ -68,7 +68,7 @@ print ("""
 )
 
 #Verficamos que no exista otro usuario igual en la base de datos
-datos = datos_personales(usuario)
+datos = cargar_informacion_usuario(usuario)
 
 #Insertamos el nuevo registro, si no es un usuario ya existente
 if(len(datos)!=0):
@@ -76,7 +76,7 @@ if(len(datos)!=0):
 else:
 	if(usuario!='empty'):
 		if(password==password_check):
-			num_inserciones = nuevo_usuario(usuario,password,nombre,email)
+			num_inserciones = agregar_usuario(usuario,password,nombre,email)
 			if(num_inserciones != 0):
 				print('<br> Usuario registrado correctamente. <br>')
 		else:
