@@ -44,7 +44,7 @@ print ("""
 	"""
 )
 print('<li class="current_page_item"><a href="home.py?Sesion=')
-print(sesion + '">Inicio</a></li>')		
+print(sesion + '">Principal</a></li>')		
 print('<li><a href="balance.py?Sesion=')
 print(sesion + '">Balance</a></li>')
 print('<li><a href="ingresos.py?Sesion=')
