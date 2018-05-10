@@ -10,8 +10,11 @@ form = cgi.FieldStorage()
 usuario = form.getfirst('Usuario','empty')
 password = form.getfirst('Password','empty')
 
+#Objeto controlador principal
+base_datos = ControladorPrincipal()
+
 #Se autentifican los datos proporcionados
-validar = ingresar(usuario, password)
+validar = base_datos.ingresar(usuario, password)
 
 #Titulo y estilo
 print ("""

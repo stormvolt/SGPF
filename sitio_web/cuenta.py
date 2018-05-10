@@ -13,6 +13,9 @@ password_check = form.getfirst('Password_check','empty')
 nombre = form.getfirst('Nombre','empty')
 email = form.getfirst('Email','empty')
 
+#Objeto controlador principal
+base_datos = ControladorPrincipal()
+
 
 #Titulo y estilo
 print ("""
@@ -28,7 +31,7 @@ print ("""
 #Se ejecuta la actualizacion de datos
 if(password!='empty'):
 	if(password==password_check):
-		actualizar_datos(sesion, password, nombre, email)
+		base_datos.actualizar_datos(sesion, password, nombre, email)
 	else:
 		print('Los passwords ingresados no coinciden.')
 	
@@ -73,7 +76,7 @@ print ("""
 )
 
 #Recuperamos los datos del usuario
-datos = cargar_informacion_usuario(sesion)
+datos = base_datos.cargar_informacion_usuario(sesion)
     	
 #Formulario de edicion de datos
 print ("""
@@ -89,7 +92,7 @@ print(datos[0][1] + '> <br><br>')
 print('<b>Password:</b>')
 print('<input type="password"  name="Password" required value=')
 print(datos[0][2] + '> <br><br>')
-print('&nbsp'*18)
+print('<b>Confirmar Password:</b>')
 print('<input type="password"  name="Password_check" placeholder="Confirmar password" required value="')
 print(datos[0][2] +  '"> <br><br>')
 print('<b>Nombre:</b>')

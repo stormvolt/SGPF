@@ -9,6 +9,9 @@ print("Content-Type: text/html\n")
 form = cgi.FieldStorage() 
 sesion = form.getfirst('Sesion','empty')
 
+#Objeto controlador principal
+base_datos = ControladorPrincipal()
+
 #Titulo y estilo
 print("""
 	<html>
@@ -61,7 +64,7 @@ print ("""
 )		
 
 #Buscamos el nombre del usuario
-datos = cargar_informacion_usuario(sesion)
+datos = base_datos.cargar_informacion_usuario(sesion)
  
  
 #Mensaje de bienvenida

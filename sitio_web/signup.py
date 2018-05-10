@@ -13,6 +13,9 @@ password_check = form.getfirst('Password_check','empty')
 nombre = form.getfirst('Nombre','empty')
 email = form.getfirst('Email','empty')
 
+#Objeto controlador principal
+base_datos = ControladorPrincipal()
+
 #Titulo y estilo
 print ("""
     <html>
@@ -68,7 +71,7 @@ print ("""
 )
 
 #Verficamos que no exista otro usuario igual en la base de datos
-datos = cargar_informacion_usuario(usuario)
+datos = base_datos.cargar_informacion_usuario(usuario)
 
 #Insertamos el nuevo registro, si no es un usuario ya existente
 if(len(datos)!=0):
@@ -76,7 +79,7 @@ if(len(datos)!=0):
 else:
 	if(usuario!='empty'):
 		if(password==password_check):
-			num_inserciones = agregar_usuario(usuario,password,nombre,email)
+			num_inserciones = base_datos.agregar_usuario(usuario,password,nombre,email)
 			if(num_inserciones != 0):
 				print('<br> Usuario registrado correctamente. <br>')
 		else:
