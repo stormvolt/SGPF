@@ -20,7 +20,7 @@ validar = base_datos.ingresar(usuario, password)
 print ("""
     <html>
 	<head>
-	<title>BUDGETSOFT Login</title>
+	<title>BUDGETSOFT Iniciar sesion</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" >
 	<link href="estilo.css" rel="stylesheet" type="text/css" media="screen">
 	</head>

@@ -12,7 +12,7 @@ class ControladorPrincipal:
 
 	
 	#Verifica que los datos proporcionados para iniciar sesion son correctos
-	def ingresar(self,usuario, password):
+	def ingresar(self, usuario, password):
 		db = self.conectar()
 		cursor = db.cursor()
 		argumentos = (usuario, password, False)
@@ -23,7 +23,7 @@ class ControladorPrincipal:
 	
 
 	#Busca los datos personales del usuario
-	def cargar_informacion_usuario(self,usuario): 
+	def cargar_informacion_usuario(self, usuario): 
 		db = self.conectar()
 		cursor = db.cursor()
 		argumentos = (usuario,)
@@ -35,7 +35,7 @@ class ControladorPrincipal:
 
 	
 	#Inserta un nuevo usuario en el sistema
-	def agregar_usuario(self,usuario, password, nombre, email):
+	def agregar_usuario(self, usuario, password, nombre, email):
 		db = self.conectar()
 		cursor = db.cursor()
 		argumentos = (self,usuario, password, nombre, email)
@@ -46,10 +46,22 @@ class ControladorPrincipal:
 	
 	
 	#Modifica los datos del usuario
-	def actualizar_datos(self,usuario, password, nombre, email):
+	def actualizar_datos(self, usuario, password, nombre, email):
 		db = self.conectar()
 		cursor = db.cursor()
 		argumentos = (usuario, password, nombre, email)
 		cursor.callproc('modificar_datos', argumentos)
 		db.commit()
 		cursor.close()
+		
+	#Recolecta todos los ingresos de un usuario en un intervalo determinado
+	def ver_ingresos(self, usuario, fecha_ini, fecha_fin):
+		db = self.conectar()
+		cursor = db.cursor()
+		argumentos = (usuario, fecha_ini, fecha_fin)
+		cursor.callproc('buscar_ingresos', argumentos)
+		#for result in cursor.stored_results():
+			#resultados.append(result.fetchall())
+		resultados = cursor.stored_results()
+		cursor.close()
+		return resultados
