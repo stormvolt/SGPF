@@ -1,6 +1,7 @@
 #!C:\Python27\python
 import cgi
 import cgitb; cgitb.enable()
+import datetime
 from controlador_usuarios import * #conexion y funciones con la tabla usuarios
 
 print("Content-Type: text/html\n")
@@ -107,13 +108,21 @@ print("""
 	<div id="panel2">
 		<h2>Ingresos</h2>
 		<form action = ''>
-		<b>Desde: </b>
-		<input type=date name=fecha_inicial id=fecha_inicial value="2018-05-01">
-		<b> Hasta: </b>
-		<input type=date name=fecha_final id=fecha_final value="2018-05-30">
-		<input type=hidden name=Sesion id=Sesion value=
 """
 )
+
+#Se toma la fecha de hoy
+hoy = datetime.datetime.now()
+hoy = hoy.isoformat()
+mes = hoy[:7]
+hoy = hoy[:10] 
+
+#Por defecto se buscan los gastos de este mes
+print('<b>Desde: </b>')
+print('<input type=date name=fecha_inicial id=fecha_inicial value="' + mes + '-01' + '"')
+print('<b> Hasta: </b>')
+print('<input type=date name=fecha_final id=fecha_final value="' + hoy + '"')		
+print('<input type=hidden name=Sesion id=Sesion value=')	
 print(sesion + '>')		
 print("""		
 		<input type=button value=Mostrar onClick="getData()"
@@ -121,7 +130,6 @@ print("""
 		<div id = contenido></div>
 """
 )
-		
 		
 print("""
 	</div>
