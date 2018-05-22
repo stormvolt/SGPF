@@ -5,9 +5,9 @@ from controlador_ingresos import * #conexion y funciones con la base de datos
 
 print("Content-Type: text/html\n")
 
-#Variables de la sesion iniciada
+#Parametros de la busqueda
 form = cgi.FieldStorage() 
-sesion = form.getfirst('Sesion','empty')
+user_id = form.getfirst('user_id','empty')
 fecha_inicial = form.getfirst('fecha_inicial','empty')
 fecha_final = form.getfirst('fecha_final','empty')
 
@@ -21,7 +21,7 @@ print("""
 """
 )
 
-
+#Tabla de resultados
 print ("""
 	<br>
 	<table border=1>
@@ -37,7 +37,7 @@ print ("""
 tabla_ingresos = ControladorIngresos()
 
 #Buscamos los ingresos del usuario
-datos = tabla_ingresos.verIngresos(sesion,fecha_inicial,fecha_final)
+datos = tabla_ingresos.verIngresos(user_id,fecha_inicial,fecha_final)
 
 for result in datos:
 	resultado= result.fetchall()

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-05-2018 a las 19:21:29
+-- Tiempo de generación: 22-05-2018 a las 20:04:32
 -- Versión del servidor: 10.1.10-MariaDB
 -- Versión de PHP: 5.6.19
 
@@ -24,25 +24,16 @@ DELIMITER $$
 --
 -- Procedimientos
 --
-CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `buscar_datos` (IN `my_user` VARCHAR(20))  READS SQL DATA
-SELECT
-id, usuario, DES_DECRYPT(password), nombre, email
-        FROM
-            usuarios
-        WHERE
-            usuario=my_user$$
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `agregarIngreso` (IN `user_id` VARCHAR(20), `my_monto` DOUBLE, IN `my_fecha` DATE, IN `descrip` VARCHAR(50))  MODIFIES SQL DATA
+INSERT INTO ingresos
+(id,id_usuario,monto,fecha,descripcion)
+VALUES (null,
+        user_id,
+        my_monto,
+        my_fecha,
+        descrip)$$
 
-CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `buscar_ingresos` (IN `my_user` VARCHAR(20), IN `fecha_ini` DATE, IN `fecha_fin` DATE)  READS SQL DATA
-SELECT
-	monto, fecha, descripcion
-        FROM
-            usuarios
-            INNER JOIN ingresos
-            ON usuarios.id = ingresos.id_usuario 
-        WHERE
-            usuario=my_user AND fecha BETWEEN fecha_ini AND fecha_fin$$
-
-CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `insertar_usuario` (IN `my_user` VARCHAR(20), IN `my_pass` VARCHAR(20), IN `my_name` VARCHAR(50), IN `my_email` VARCHAR(50))  MODIFIES SQL DATA
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `agregarUsuario` (IN `my_user` VARCHAR(20), IN `my_pass` VARCHAR(20), IN `my_name` VARCHAR(50), IN `my_email` VARCHAR(50))  MODIFIES SQL DATA
 INSERT INTO usuarios
 (id,usuario,password,nombre,email)
 VALUES (null,
@@ -51,12 +42,11 @@ VALUES (null,
         my_name,
         my_email)$$
 
-CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `modificar_datos` (IN `my_user` VARCHAR(20), IN `my_pass` VARCHAR(20), IN `my_name` VARCHAR(50), IN `my_email` VARCHAR(50))  MODIFIES SQL DATA
-UPDATE usuarios
-SET password=DES_ENCRYPT(my_pass), nombre=my_name, email=my_email
-WHERE usuario=my_user$$
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `borrarIngreso` (IN `id_ingreso` INT(11))  MODIFIES SQL DATA
+DELETE FROM ingresos
+WHERE id = id_ingreso$$
 
-CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `verificar_inicio_sesion` (IN `my_user` VARCHAR(20), IN `my_pass` VARCHAR(20), OUT `resultado` BOOLEAN)  READS SQL DATA
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `ingresar` (IN `my_user` VARCHAR(20), IN `my_pass` VARCHAR(20), OUT `resultado` BOOLEAN)  READS SQL DATA
     DETERMINISTIC
 BEGIN
 
@@ -76,6 +66,32 @@ BEGIN
    END IF;
    
 END$$
+
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `modificarDatos` (IN `my_user` VARCHAR(20), IN `my_pass` VARCHAR(20), IN `my_name` VARCHAR(50), IN `my_email` VARCHAR(50))  MODIFIES SQL DATA
+UPDATE usuarios
+SET password=DES_ENCRYPT(my_pass), nombre=my_name, email=my_email
+WHERE usuario=my_user$$
+
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `modificarIngreso` (IN `id_ingreso` INT(11), IN `my_monto` DOUBLE, IN `my_date` DATE, IN `descrip` VARCHAR(50))  MODIFIES SQL DATA
+UPDATE ingresos
+SET monto=my_monto, fecha=my_date, descripcion=descrip
+WHERE id=id_ingreso$$
+
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `requerirInformacionUsuario` (IN `my_user` VARCHAR(20))  READS SQL DATA
+SELECT
+id, usuario, DES_DECRYPT(password), nombre, email
+        FROM
+            usuarios
+        WHERE
+            usuario=my_user$$
+
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `verIngresos` (IN `user_id` INT(11), IN `fecha_ini` DATE, IN `fecha_fin` DATE)  READS SQL DATA
+SELECT
+	monto, fecha, descripcion
+        FROM
+            ingresos
+        WHERE
+            id_usuario=user_id AND fecha BETWEEN fecha_ini AND fecha_fin$$
 
 DELIMITER ;
 

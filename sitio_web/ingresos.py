@@ -1,6 +1,7 @@
 #!C:\Python27\python
 import cgi
 import cgitb; cgitb.enable()
+from controlador_usuarios import * #conexion y funciones con la tabla usuarios
 
 print("Content-Type: text/html\n")
 
@@ -8,21 +9,39 @@ print("Content-Type: text/html\n")
 form = cgi.FieldStorage() 
 sesion = form.getfirst('Sesion','empty')
 
+#Objeto controlador de la tabla de usuarios
+tabla_usuarios = ControladorUsuarios()
 
-#Titulo, estilo y modulo ajax
+id_usuario = tabla_usuarios.requerirInformacionUsuario(sesion)[0][0]
+
+
+#Titulo, estilo
 print("""
 	<html>
 	<head>
 	<title>BUDGETSOFT Ingresos</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" >
 	<link href="estilo.css" rel="stylesheet" type="text/css" media="screen">
+"""
+)    	
+
+#Modulo ajax
+print ("""
 	<script type="text/javascript" src="jquery.min.js"></script> 
 	<script type="text/javascript"> 
 	function getData(){
         var parametros = {
 				"fecha_inicial" : document.getElementById('fecha_inicial').value,
 				"fecha_final" : document.getElementById('fecha_final').value,
-                "Sesion" : document.getElementById('Sesion').value,
+"""
+)    	
+
+#Enviamos el id del usuario
+print('"user_id" : ' + str(id_usuario) + ',')
+    	
+
+#Modulo ajax
+print ("""
 		};
         $.ajax({
                 data:  parametros,
@@ -46,7 +65,7 @@ print("""
 
 #Encabezado de pagina
 print ("""
-	<body>
+	<body onload="getData()">
 	<header id="header">
 	<img src = "images/logo.jpg" width="70" height="70" alt="Imagen no encontrada">
 	<h1>BUDGETSOFT</h1>
@@ -89,9 +108,9 @@ print("""
 		<h2>Ingresos</h2>
 		<form action = ''>
 		<b>Desde: </b>
-		<input type=date name=fecha_inicial id=fecha_inicial>
+		<input type=date name=fecha_inicial id=fecha_inicial value="2018-05-01">
 		<b> Hasta: </b>
-		<input type=date name=fecha_final id=fecha_final>
+		<input type=date name=fecha_final id=fecha_final value="2018-05-30">
 		<input type=hidden name=Sesion id=Sesion value=
 """
 )
