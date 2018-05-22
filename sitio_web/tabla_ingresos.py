@@ -1,7 +1,7 @@
 #!C:\Python27\python
 import cgi
 import cgitb; cgitb.enable()
-from conect import * #conexion y funciones con la base de datos
+from controlador_ingresos import * #conexion y funciones con la base de datos
 
 print("Content-Type: text/html\n")
 
@@ -34,10 +34,10 @@ print ("""
 )
 
 #Objeto controlador principal
-base_datos = ControladorPrincipal()
+tabla_ingresos = ControladorIngresos()
 
 #Buscamos los ingresos del usuario
-datos = base_datos.ver_ingresos(sesion,fecha_inicial,fecha_final)
+datos = tabla_ingresos.verIngresos(sesion,fecha_inicial,fecha_final)
 
 for result in datos:
 	resultado= result.fetchall()

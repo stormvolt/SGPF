@@ -1,7 +1,7 @@
 #!C:\Python27\python
 import cgi
 import cgitb; cgitb.enable()
-from conect import * #conexion y funciones con la base de datos
+from controlador_usuarios import * #conexion y funciones con la tabla usuarios
 
 print("Content-Type: text/html\n")
 
@@ -13,8 +13,8 @@ password_check = form.getfirst('Password_check','empty')
 nombre = form.getfirst('Nombre','empty')
 email = form.getfirst('Email','empty')
 
-#Objeto controlador principal
-base_datos = ControladorPrincipal()
+#Objeto controlador de la tabla de usuarios
+tabla_usuarios = ControladorUsuarios()
 
 
 #Titulo y estilo
@@ -31,7 +31,7 @@ print ("""
 #Se ejecuta la actualizacion de datos
 if(password!='empty'):
 	if(password==password_check):
-		base_datos.actualizar_datos(sesion, password, nombre, email)
+		tabla_usuarios.modificarDatos(sesion, password, nombre, email)
 	else:
 		print('Los passwords ingresados no coinciden.')
 	
@@ -76,7 +76,7 @@ print ("""
 )
 
 #Recuperamos los datos del usuario
-datos = base_datos.cargar_informacion_usuario(sesion)
+datos = tabla_usuarios.requerirInformacionUsuario(sesion)
     	
 #Formulario de edicion de datos
 print ("""

@@ -1,7 +1,6 @@
 #!C:\Python27\python
 import cgi
 import cgitb; cgitb.enable()
-from conect import * #conexion y funciones con la base de datos
 
 print("Content-Type: text/html\n")
 
@@ -9,8 +8,6 @@ print("Content-Type: text/html\n")
 form = cgi.FieldStorage() 
 sesion = form.getfirst('Sesion','empty')
 
-#Objeto controlador principal
-base_datos = ControladorPrincipal()
 
 #Titulo, estilo y modulo ajax
 print("""

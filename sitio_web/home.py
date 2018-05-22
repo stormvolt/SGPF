@@ -1,7 +1,7 @@
 #!C:\Python27\python
 import cgi
 import cgitb; cgitb.enable()
-from conect import * #conexion y funciones con la base de datos
+from controlador_usuarios import * #conexion y funciones con la tabla usuarios
 
 print("Content-Type: text/html\n")
 
@@ -9,8 +9,8 @@ print("Content-Type: text/html\n")
 form = cgi.FieldStorage() 
 sesion = form.getfirst('Sesion','empty')
 
-#Objeto controlador principal
-base_datos = ControladorPrincipal()
+#Objeto controlador de la tabla de usuarios
+tabla_usuarios = ControladorUsuarios()
 
 #Titulo y estilo
 print("""
@@ -64,7 +64,7 @@ print ("""
 )		
 
 #Buscamos el nombre del usuario
-datos = base_datos.cargar_informacion_usuario(sesion)
+datos = tabla_usuarios.requerirInformacionUsuario(sesion)
  
  
 #Mensaje de bienvenida

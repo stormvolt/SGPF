@@ -1,7 +1,7 @@
 #!C:\Python27\python
 import cgi
 import cgitb; cgitb.enable()
-from conect import * #conexion y funciones con la base de datos
+from controlador_usuarios import * #conexion y funciones con la base de datos
 
 print("Content-Type: text/html\n")
 
@@ -10,11 +10,11 @@ form = cgi.FieldStorage()
 usuario = form.getfirst('Usuario','empty')
 password = form.getfirst('Password','empty')
 
-#Objeto controlador principal
-base_datos = ControladorPrincipal()
+#Objeto controlador de la tabla de usuarios
+tabla_usuarios = ControladorUsuarios()
 
 #Se autentifican los datos proporcionados
-validar = base_datos.ingresar(usuario, password)
+validar = tabla_usuarios.ingresar(usuario, password)
 
 #Titulo y estilo
 print ("""
