@@ -63,7 +63,7 @@ print ("""
 		<div id="panel2">
 			<h2>Iniciar sesion</h2>
 			<form action="login.py" method="post">
-			<input type="text"  name="Usuario" placeholder="Usuario" required> <br><br>
+			<input type="text"  name="Usuario" placeholder="Usuario" autocomplete="off" autofocus required> <br><br>
 			<input type="password"  name="Password" placeholder="Password" required> <br><br>
 			<br>
 			<input type="submit" value="Acceder"> <br>

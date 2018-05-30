@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-05-2018 a las 20:04:32
+-- Tiempo de generación: 30-05-2018 a las 04:41:06
 -- Versión del servidor: 10.1.10-MariaDB
 -- Versión de PHP: 5.6.19
 
@@ -87,11 +87,12 @@ id, usuario, DES_DECRYPT(password), nombre, email
 
 CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `verIngresos` (IN `user_id` INT(11), IN `fecha_ini` DATE, IN `fecha_fin` DATE)  READS SQL DATA
 SELECT
-	monto, fecha, descripcion
+	id, monto, fecha, descripcion
         FROM
             ingresos
         WHERE
-            id_usuario=user_id AND fecha BETWEEN fecha_ini AND fecha_fin$$
+            id_usuario=user_id AND fecha BETWEEN fecha_ini AND fecha_fin
+        ORDER BY fecha ASC$$
 
 DELIMITER ;
 
@@ -155,8 +156,9 @@ CREATE TABLE `ingresos` (
 --
 
 INSERT INTO `ingresos` (`id`, `id_usuario`, `monto`, `fecha`, `descripcion`) VALUES
-(1, 1, 1500, '2018-05-01', 'sueldo'),
-(2, 1, 100, '2018-05-10', 'bingo');
+(1, 1, 1500, '2018-05-15', 'Sueldo'),
+(2, 1, 300, '2018-05-18', 'Bingo'),
+(3, 1, 10, '2018-05-04', 'Billete en la calle');
 
 -- --------------------------------------------------------
 
@@ -193,7 +195,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `usuario`, `password`, `nombre`, `email`) VALUES
-(1, 'user1', '€Xç>w\nðìa', 'Carlos Diaz', 'carlin@gmail.com');
+(1, 'user1', '€Xç>w\nðìa', 'Carlos Mendoza', 'carlin@gmail.com');
 
 --
 -- Índices para tablas volcadas
@@ -251,7 +253,7 @@ ALTER TABLE `gastos`
 -- AUTO_INCREMENT de la tabla `ingresos`
 --
 ALTER TABLE `ingresos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `metas`
 --

@@ -17,7 +17,7 @@ class ControladorIngresos:
 	def agregarIngreso(self, user_id, monto, fecha, descripcion):
 		db = mysql.connector.connect(user='root', password='', host='127.0.0.1', database='budgetsoft')
 		cursor = db.cursor()
-		argumentos = (user_id, fecha_ini, fecha_fin)
+		argumentos = (user_id, monto, fecha, descripcion)
 		inserciones = cursor.callproc('agregarIngreso', argumentos)
 		db.commit()
 		cursor.close()
@@ -26,8 +26,8 @@ class ControladorIngresos:
 	def borrarIngreso(self, id):
 		db = mysql.connector.connect(user='root', password='', host='127.0.0.1', database='budgetsoft')
 		cursor = db.cursor()
-		argumentos = (id)
-		inserciones = cursor.callproc('borrarIngreso', argumentos)
+		argumentos = (id,)
+		cursor.callproc('borrarIngreso', argumentos)
 		db.commit()
 		cursor.close()
 		

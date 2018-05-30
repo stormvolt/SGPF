@@ -59,11 +59,11 @@ print ("""
 		<div id="panel2">
 			<h2>Registrarse</h2>
 			<form action="signup.py" method="post">
-			<input type="text"  name="Usuario" placeholder="Usuario" required> <br><br>
+			<input type="text"  name="Usuario" placeholder="Usuario" autofocus required> <br><br>
 			<input type="password"  name="Password" placeholder="Password" required> <br><br>
 			<input type="password"  name="Password_check" placeholder="Confirmar password" required> <br><br>
-			<input type="text"  name="Nombre" placeholder="Nombre" required> <br><br>
-			<input type="email"  name="Email" placeholder="Email" required> <br><br>
+			<input type="text"  name="Nombre" placeholder="Nombre" autocomplete="off" required> <br><br>
+			<input type="email"  name="Email" placeholder="Email" autocomplete="off" required> <br><br>
 			<br>
 			<input type="submit" value="Registrarse"> <br>
 			</form>
