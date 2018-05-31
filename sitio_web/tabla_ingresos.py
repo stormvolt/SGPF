@@ -1,7 +1,7 @@
 #!C:\Python27\python
 import cgi
 import cgitb; cgitb.enable()
-from controlador_ingresos import * #conexion y funciones con la base de datos
+from controlador_ingresos import * #conexion y funciones con la tabla ingresos
 
 print("Content-Type: text/html\n")
 
@@ -47,16 +47,16 @@ for result in datos:
 	resultado= result.fetchall()
 	for registro in resultado:
 		print('<tr>')
-		print('<td><input type="number" min="1" id="1' + str(fila) +  '" required value="'+str(registro[1])+'"></td>')
-		print('<td><input type="date" id="2' + str(fila) + '" required value="'+str(registro[2])+'"></td>')
-		print('<td><input type="text" id="3' + str(fila) +  '" required value="'+str(registro[3])+'"></td>')
+		print('<td><input type="number" min="1" id="1' + str(fila) +  '" required value="'+registro[1]+'"></td>')
+		print('<td><input type="date" id="2' + str(fila) + '" required value="'+registro[2]+'"></td>')
+		print('<td><input type="text" id="3' + str(fila) +  '" required value="'+registro[3]+'"></td>')
 		#Boton para borrar registro
 		print('<td><form action="ingresos.py?Sesion=')
 		print(sesion + '" method="post">')
 		print('<input type="hidden" name="accion" value="borrar">')
 		print('<input type="hidden" name="fecha_inicial" value="' + fecha_inicial +'">')
 		print('<input type="hidden" name="fecha_final" value="' + fecha_final +'">')
-		print('<input type="hidden" name="registro" value="'+ str(registro[0])+ '">')
+		print('<input type="hidden" name="registro" value="'+ registro[0]+ '">')
 		print('<input type="submit" value="Borrar"></form></td>')
 		#Formulario para modificar registro
 		print('<td><form action="ingresos.py?Sesion=')
@@ -64,7 +64,7 @@ for result in datos:
 		print('<input type="hidden" name="accion" value="modificar">')
 		print('<input type="hidden" name="fecha_inicial" value="' + fecha_inicial +'">')
 		print('<input type="hidden" name="fecha_final" value="' + fecha_final +'">')
-		print('<input type="hidden" name="registro" value="'+ str(registro[0])+ '">')		
+		print('<input type="hidden" name="registro" value="'+ registro[0] + '">')		
 		print('<input type="hidden" id="monto' + str(fila)  + '" name="monto" required value="">')
 		print('<input type="hidden" id="fecha' + str(fila)  + '" name="fecha" required value="">')
 		print('<input type="hidden" id="descripcion' + str(fila)  + '" name="descripcion" required value="">')		

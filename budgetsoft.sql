@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-05-2018 a las 04:41:06
+-- Tiempo de generación: 31-05-2018 a las 23:58:30
 -- Versión del servidor: 10.1.10-MariaDB
 -- Versión de PHP: 5.6.19
 
@@ -24,7 +24,17 @@ DELIMITER $$
 --
 -- Procedimientos
 --
-CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `agregarIngreso` (IN `user_id` VARCHAR(20), `my_monto` DOUBLE, IN `my_fecha` DATE, IN `descrip` VARCHAR(50))  MODIFIES SQL DATA
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `agregarGasto` (IN `user_id` INT(11), `my_monto` DOUBLE, IN `cat_id` INT(11), IN `my_fecha` DATE, IN `descrip` VARCHAR(50))  MODIFIES SQL DATA
+INSERT INTO gastos
+(id,id_usuario,id_categoria,monto,fecha,descripcion)
+VALUES (null,
+        user_id,
+        cat_id,
+        my_monto,
+        my_fecha,
+        descrip)$$
+
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `agregarIngreso` (IN `user_id` INT(11), IN `my_monto` DOUBLE, IN `my_fecha` DATE, IN `descrip` VARCHAR(50))  MODIFIES SQL DATA
 INSERT INTO ingresos
 (id,id_usuario,monto,fecha,descripcion)
 VALUES (null,
@@ -41,6 +51,10 @@ VALUES (null,
         DES_ENCRYPT(my_pass),
         my_name,
         my_email)$$
+
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `borrarGasto` (IN `id_gasto` INT(11))  MODIFIES SQL DATA
+DELETE FROM gastos
+WHERE id = id_gasto$$
 
 CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `borrarIngreso` (IN `id_ingreso` INT(11))  MODIFIES SQL DATA
 DELETE FROM ingresos
@@ -72,6 +86,11 @@ UPDATE usuarios
 SET password=DES_ENCRYPT(my_pass), nombre=my_name, email=my_email
 WHERE usuario=my_user$$
 
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `modificarGastos` (IN `id_gasto` INT(11), IN `cat_id` INT(11), IN `my_monto` DOUBLE, IN `my_date` DATE, IN `descrip` VARCHAR(50))  MODIFIES SQL DATA
+UPDATE gastos
+SET monto=my_monto, id_categoria=cat_id, fecha=my_date, descripcion=descrip
+WHERE id=id_gasto$$
+
 CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `modificarIngreso` (IN `id_ingreso` INT(11), IN `my_monto` DOUBLE, IN `my_date` DATE, IN `descrip` VARCHAR(50))  MODIFIES SQL DATA
 UPDATE ingresos
 SET monto=my_monto, fecha=my_date, descripcion=descrip
@@ -84,6 +103,25 @@ id, usuario, DES_DECRYPT(password), nombre, email
             usuarios
         WHERE
             usuario=my_user$$
+
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `verCategorias` ()  READS SQL DATA
+SELECT
+	categorias.id, categorias.nombre
+        FROM
+            categorias$$
+
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `verGastos` (IN `user_id` INT(11), IN `fecha_ini` DATE, IN `fecha_fin` DATE)  READS SQL DATA
+SELECT
+	gastos.id, gastos.monto, categorias.id AS 'id_cat', categorias.nombre, gastos.fecha, gastos.descripcion
+        FROM
+            gastos
+        INNER JOIN
+        	categorias
+        ON
+        	categorias.id = gastos.id_categoria
+        WHERE
+            id_usuario=user_id AND fecha BETWEEN fecha_ini AND fecha_fin
+        ORDER BY fecha ASC$$
 
 CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `verIngresos` (IN `user_id` INT(11), IN `fecha_ini` DATE, IN `fecha_fin` DATE)  READS SQL DATA
 SELECT
@@ -137,6 +175,18 @@ CREATE TABLE `gastos` (
   `descripcion` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `gastos`
+--
+
+INSERT INTO `gastos` (`id`, `id_usuario`, `id_categoria`, `monto`, `fecha`, `descripcion`) VALUES
+(1, 1, 1, 10, '2018-05-16', 'Sandwich'),
+(2, 1, 2, 9, '2018-05-23', 'Taxi'),
+(5, 1, 5, 45, '2018-05-09', 'Camisa negra'),
+(6, 1, 6, 15, '2018-05-31', 'Paracetamol'),
+(7, 1, 7, 50, '2018-05-01', 'Noche de cine'),
+(8, 1, 8, 30, '2018-05-26', 'Cepillos de dientes');
+
 -- --------------------------------------------------------
 
 --
@@ -158,7 +208,8 @@ CREATE TABLE `ingresos` (
 INSERT INTO `ingresos` (`id`, `id_usuario`, `monto`, `fecha`, `descripcion`) VALUES
 (1, 1, 1500, '2018-05-15', 'Sueldo'),
 (2, 1, 300, '2018-05-18', 'Bingo'),
-(3, 1, 10, '2018-05-04', 'Billete en la calle');
+(3, 1, 10, '2018-05-04', 'Billete en la calle'),
+(4, 1, 1, '2018-05-31', 'Combi');
 
 -- --------------------------------------------------------
 
@@ -195,7 +246,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `usuario`, `password`, `nombre`, `email`) VALUES
-(1, 'user1', '€Xç>w\nðìa', 'Carlos Mendoza', 'carlin@gmail.com');
+(1, 'user1', '€Xç>w\nðìa', 'Carlos Diaz', 'carlin@gmail.com');
 
 --
 -- Índices para tablas volcadas
@@ -248,12 +299,12 @@ ALTER TABLE `categorias`
 -- AUTO_INCREMENT de la tabla `gastos`
 --
 ALTER TABLE `gastos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT de la tabla `ingresos`
 --
 ALTER TABLE `ingresos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `metas`
 --

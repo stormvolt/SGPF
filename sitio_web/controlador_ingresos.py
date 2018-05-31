@@ -23,6 +23,7 @@ class ControladorIngresos:
 		cursor.close()
 		return inserciones
 		
+	#Borra un ingreso
 	def borrarIngreso(self, id):
 		db = mysql.connector.connect(user='root', password='', host='127.0.0.1', database='budgetsoft')
 		cursor = db.cursor()
@@ -31,6 +32,7 @@ class ControladorIngresos:
 		db.commit()
 		cursor.close()
 		
+	#Modifica los campos de un ingreso
 	def modificarIngreso(self, id, monto, fecha, descripcion):
 		db = mysql.connector.connect(user='root', password='', host='127.0.0.1', database='budgetsoft')
 		cursor = db.cursor()

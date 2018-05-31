@@ -3,7 +3,8 @@ import cgi
 import cgitb; cgitb.enable()
 import datetime
 from controlador_usuarios import * #conexion y funciones con la tabla usuarios
-from controlador_ingresos import * #conexion y funciones con la tabla ingresos
+from controlador_gastos import * #conexion y funciones con la tabla gastos
+from controlador_categorias import * #conexion y funciones con la tabla categorias
 
 print("Content-Type: text/html\n")
 
@@ -12,6 +13,7 @@ form = cgi.FieldStorage()
 sesion = form.getfirst('Sesion','empty')
 fecha = form.getfirst('fecha','empty')
 monto = form.getfirst('monto','empty')
+id_categoria = form.getfirst('id_categoria','empty')
 descripcion = form.getfirst('descripcion','empty')
 fecha_inicial = form.getfirst('fecha_inicial','empty')
 fecha_final = form.getfirst('fecha_final','empty')
@@ -21,27 +23,33 @@ registro = form.getfirst('registro','empty')
 #Objeto controlador de la tabla de usuarios
 tabla_usuarios = ControladorUsuarios()
 
-#Objeto controlador de la tabla ingresos
-tabla_ingresos = ControladorIngresos()
+#Objeto controlador de la tabla gastos
+tabla_gastos = ControladorGastos()
+
+#Objeto controlador de la tabla categorias
+tabla_categorias = ControladorCategorias()
 
 #Obtenemos el id del usuario
 id_usuario = tabla_usuarios.requerirInformacionUsuario(sesion)[0][0]
 
+#Cargamos la lista de categorias de gastos
+categorias_disponibles = tabla_categorias.verCategorias()
+
 #Insertamos el nuevo registro
 if(accion=='insertar'):
-	tabla_ingresos.agregarIngreso(id_usuario, monto, fecha, descripcion)
+	tabla_gastos.agregarGastos(id_usuario, monto, id_categoria, fecha, descripcion)
 #Borrar el registro
 elif(accion=='borrar'):
-	tabla_ingresos.borrarIngreso(registro)
+	tabla_gastos.borrarGasto(registro)
 #Modificar registro	
 elif(accion=='modificar'):
-	tabla_ingresos.modificarIngreso(registro, monto, fecha, descripcion)
+	tabla_gastos.modificarGastos(registro, id_categoria, monto, fecha, descripcion)
 
 #Titulo, estilo
 print("""
 	<html>
 	<head>
-	<title>BUDGETSOFT Ingresos</title>
+	<title>BUDGETSOFT Gastos</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" >
 	<link href="estilo.css" rel="stylesheet" type="text/css" media="screen">
 """
@@ -69,7 +77,7 @@ print ("""
 				
 """
 )
-print('url:   "tabla_ingresos.py?Sesion=' + sesion + '",')
+print('url:   "tabla_gastos.py?Sesion=' + sesion + '",')
 print ("""
                 
                 type:  'get',
@@ -112,9 +120,9 @@ print('<li><a href="home.py?Sesion=')
 print(sesion + '">Principal</a></li>')		
 print('<li><a href="balance.py?Sesion=')
 print(sesion + '">Balance</a></li>')
-print('<li class="current_page_item"><a href="ingresos.py?Sesion=')
+print('<li><a href="ingresos.py?Sesion=')
 print(sesion + '">Ingresos</a></li>')
-print('<li><a href="gastos.py?Sesion=')
+print('<li class="current_page_item"><a href="gastos.py?Sesion=')
 print(sesion + '">Gastos</a></li>')
 print('<li><a href="metas.py?Sesion=')
 print(sesion + '">Metas</a></li>')
@@ -128,10 +136,10 @@ print ("""
 	"""
 )		
 
-#Formulario que recupera los ingresos en un intervalo de tiempo determinado
+#Formulario que recupera los gastos en un intervalo de tiempo determinado
 print("""
 	<div id="panel2">
-		<h2>Ingresos</h2>
+		<h2>Gastos</h2>
 		
 """
 )
@@ -161,18 +169,25 @@ print("""
 """
 )
 
-#Formulario para agregar ingresos
+#Formulario para agregar gastos
 print('<br><br><br>')		
-print('<h2>Agregar ingreso:</h2>')
-print('<form name="agregarIngreso" action="ingresos.py?Sesion=')
+print('<h2>Agregar gasto:</h2>')
+print('<form name="agregar_gasto" id="agregar_gasto" action="gastos.py?Sesion=')
 print(sesion + '" method="post">')
 print('<input type="hidden" name="accion" value="insertar">')
 print('<TABLE BORDER=0>')
 print('<TR>')
 print('<TD><input type="number"  name="monto" placeholder="Monto" min="1" autocomplete="off" required></TD> ')
+#Selector de categorias
+print('<TD><select name="id_categoria" form="agregar_gasto">')
+for cursor_categorias in categorias_disponibles:
+	cursor = cursor_categorias.fetchall()
+	for fila_categoria in cursor:
+		print('<option value="' + fila_categoria[0] + '">' + fila_categoria[1] + '</option>')
+print('</select></TD>')
 print('<TD><input type="date"  name="fecha" required value="' + hoy + '"></TD> ')
 print('<TD><input type="text"  name="descripcion" placeholder="Descripcion" size="50" required></TD> ')
-print('<TD><input type="submit" value="Agregar ingreso"></TD>')
+print('<TD><input type="submit" value="Agregar gasto"></TD>')
 print('</form>')
 print('</TR>')
 print('</TABLE>')
