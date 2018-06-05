@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 31-05-2018 a las 23:58:30
+-- Tiempo de generación: 05-06-2018 a las 20:21:48
 -- Versión del servidor: 10.1.10-MariaDB
 -- Versión de PHP: 5.6.19
 
@@ -43,6 +43,17 @@ VALUES (null,
         my_fecha,
         descrip)$$
 
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `agregarMeta` (IN `user_id` INT(11), IN `my_nombre` VARCHAR(20), IN `my_monto` DOUBLE, IN `fecha_ini` DATE, IN `fecha_fin` DATE, IN `descrip` VARCHAR(50))  MODIFIES SQL DATA
+INSERT INTO metas
+(id,id_usuario,nombre,monto,inicio,final,descripcion)
+VALUES (null,
+        user_id,
+        my_nombre,
+        my_monto,
+        fecha_ini,
+        fecha_fin,
+        descrip)$$
+
 CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `agregarUsuario` (IN `my_user` VARCHAR(20), IN `my_pass` VARCHAR(20), IN `my_name` VARCHAR(50), IN `my_email` VARCHAR(50))  MODIFIES SQL DATA
 INSERT INTO usuarios
 (id,usuario,password,nombre,email)
@@ -59,6 +70,19 @@ WHERE id = id_gasto$$
 CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `borrarIngreso` (IN `id_ingreso` INT(11))  MODIFIES SQL DATA
 DELETE FROM ingresos
 WHERE id = id_ingreso$$
+
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `borrarMeta` (IN `id_meta` INT(11))  MODIFIES SQL DATA
+DELETE FROM metas
+WHERE id = id_meta$$
+
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `cargarMetas` (IN `user_id` INT(11))  READS SQL DATA
+SELECT
+	id, nombre, monto, inicio, final, descripcion
+        FROM
+            metas
+        WHERE
+            id_usuario=user_id 
+        ORDER BY inicio ASC$$
 
 CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `ingresar` (IN `my_user` VARCHAR(20), IN `my_pass` VARCHAR(20), OUT `resultado` BOOLEAN)  READS SQL DATA
     DETERMINISTIC
@@ -95,6 +119,11 @@ CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `modificarIngreso` (IN `id_ingreso` 
 UPDATE ingresos
 SET monto=my_monto, fecha=my_date, descripcion=descrip
 WHERE id=id_ingreso$$
+
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `modificarMeta` (IN `id_meta` INT(11), IN `my_nombre` VARCHAR(20), IN `my_monto` DOUBLE, IN `fecha_ini` DATE, IN `fecha_fin` DATE, IN `descrip` VARCHAR(50))  MODIFIES SQL DATA
+UPDATE metas
+SET nombre=my_nombre, monto=my_monto, inicio=fecha_ini, final=fecha_fin, descripcion=descrip
+WHERE id=id_meta$$
 
 CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `requerirInformacionUsuario` (IN `my_user` VARCHAR(20))  READS SQL DATA
 SELECT
@@ -227,6 +256,13 @@ CREATE TABLE `metas` (
   `descripcion` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `metas`
+--
+
+INSERT INTO `metas` (`id`, `id_usuario`, `nombre`, `monto`, `inicio`, `final`, `descripcion`) VALUES
+(1, 1, 'Televisor', 2000, '2018-01-01', '2018-12-12', 'Televisor para ver el mundial');
+
 -- --------------------------------------------------------
 
 --
@@ -246,7 +282,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `usuario`, `password`, `nombre`, `email`) VALUES
-(1, 'user1', '€Xç>w\nðìa', 'Carlos Diaz', 'carlin@gmail.com');
+(1, 'user1', '€Xç>w\nðìa', 'Carlos Mendoza', 'carlin@gmail.com');
 
 --
 -- Índices para tablas volcadas
@@ -304,12 +340,12 @@ ALTER TABLE `gastos`
 -- AUTO_INCREMENT de la tabla `ingresos`
 --
 ALTER TABLE `ingresos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `metas`
 --
 ALTER TABLE `metas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
