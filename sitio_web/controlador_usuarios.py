@@ -30,7 +30,7 @@ class ControladorUsuarios:
 	def agregarUsuario(self, usuario, password, nombre, email):
 		db = mysql.connector.connect(user='root', password='', host='127.0.0.1', database='budgetsoft')
 		cursor = db.cursor()
-		argumentos = (self,usuario, password, nombre, email)
+		argumentos = (usuario, password, nombre, email)
 		inserciones = cursor.callproc('agregarUsuario', argumentos)
 		db.commit()
 		cursor.close()

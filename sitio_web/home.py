@@ -1,7 +1,9 @@
 #!C:\Python27\python
 import cgi
 import cgitb; cgitb.enable()
+import datetime
 from controlador_usuarios import * #conexion y funciones con la tabla usuarios
+from controlador_balance import * #para calcular balances entre ingresos y gastos
 
 print("Content-Type: text/html\n")
 
@@ -11,6 +13,20 @@ sesion = form.getfirst('Sesion','empty')
 
 #Objeto controlador de la tabla de usuarios
 tabla_usuarios = ControladorUsuarios()
+
+#Obtenemos el nombre y el id del usuario
+datos = tabla_usuarios.requerirInformacionUsuario(sesion)
+id_usuario = datos[0][0]
+nombre = datos[0][3]
+
+#Objeto controlador del balance
+mi_balance = ControladorBalance()
+
+#Se toma la fecha de hoy
+hoy = datetime.datetime.now()
+hoy = hoy.isoformat()
+mes = hoy[:7]
+hoy = hoy[:10] 
 
 #Titulo y estilo
 print("""
@@ -63,10 +79,6 @@ print ("""
 	"""
 )		
 
-#Buscamos el nombre del usuario
-datos = tabla_usuarios.requerirInformacionUsuario(sesion)
- 
- 
 #Mensaje de bienvenida
 print ("""
 	
@@ -74,8 +86,15 @@ print ("""
 		<h2>Bienvenido, 
 """
 )
-print(datos[0][3] + '.</h2>')
-		
+print(nombre + '.</h2>')
+
+#Se muestra el balance de este mes
+print('<br>')
+print('<TABLE BORDER=0>')
+print('<tr><th>Balance del mes</th></tr>')	
+print('<tr><td>')
+print(mi_balance.obtenerBalance(id_usuario,mes + '-01',hoy))		
+print('</td></tr>')
 		
 print("""
 	</div>

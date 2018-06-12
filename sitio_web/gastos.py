@@ -43,7 +43,7 @@ elif(accion=='borrar'):
 	tabla_gastos.borrarGasto(registro)
 #Modificar registro	
 elif(accion=='modificar'):
-	tabla_gastos.modificarGastos(registro, id_categoria, monto, fecha, descripcion)
+	tabla_gastos.modificarGasto(registro, id_categoria, monto, fecha, descripcion)
 
 #Titulo, estilo
 print("""
@@ -153,14 +153,14 @@ hoy = hoy[:10]
 #Por defecto se buscan los gastos de este mes
 print('<b>Desde: </b>')
 if(fecha_inicial!='empty'):
-	print('<input type=date name=fecha_inicial id=fecha_inicial value="' + fecha_inicial + '">')
+	print('<input type=date name=fecha_inicial id=fecha_inicial required value="' + fecha_inicial + '">')
 else:
-	print('<input type=date name=fecha_inicial id=fecha_inicial value="' + mes + '-01' + '">')
+	print('<input type=date name=fecha_inicial id=fecha_inicial required value="' + mes + '-01' + '">')
 print('<b> Hasta: </b>')
 if(fecha_final!='empty'):
-	print('<input type=date name=fecha_final id=fecha_final value="' + fecha_final + '">')
+	print('<input type=date name=fecha_final id=fecha_final required value="' + fecha_final + '">')
 else:
-	print('<input type=date name=fecha_final id=fecha_final value="' + hoy + '">')		
+	print('<input type=date name=fecha_final id=fecha_final required value="' + hoy + '">')		
 print("""		
 		<input type=button value=Mostrar onClick="getData()"
 		</form>
