@@ -16,7 +16,7 @@ fecha_final = form.getfirst('fecha_final','empty')
 print("""
 	<html>
 	<head>
-	<title>CGI script! Python</title
+	<title>CGI script! Python</title>
 	</head>
 	</body>
 """

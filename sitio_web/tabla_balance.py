@@ -12,35 +12,87 @@ user_id = form.getfirst('user_id','empty')
 fecha_inicial = form.getfirst('fecha_inicial','empty')
 fecha_final = form.getfirst('fecha_final','empty')
 
-#Encabezado generico
+#Objeto controlador del balance
+mi_balance = ControladorBalance()
+
 print("""
-	<html>
-	<head>
-	<title>CGI script! Python</title
-	</head>
-	</body>
+<html>
+<head>
+<title>CGI script! Python</title>
+<script src="zingchart.min.js"></script>
+</head>
+<body>
 """
 )
 
 #Tabla de resultados
 print ("""
 	<br>
+	<div id ='chartDiv'>
 	<table border=1>
 	<tr>
 	<th>Balance</th>
 	</tr>
 """
 )
-
-#Objeto controlador del balance
-mi_balance = ControladorBalance()
-
 #Se imprime el resultado en pantalla
 print('<tr><td>')
 print(mi_balance.obtenerBalance(user_id,fecha_inicial,fecha_final))		
 print('</td></tr>')		
-    
+
+#Grafico de pie
+print("""
+</table>
+<br><br><br>	
+</div>
+<script>
+  var chartData={
+	"gui": {
+		behaviors: [
+		{
+			id: 'DownloadPDF',
+			enabled: 'none'
+		},
+		{
+			id: 'Reload',
+			enabled: 'none'
+		},
+		{
+			id: 'ViewSource',
+			enabled: 'none'
+		},
+		{
+			id: 'SaveAsImagePNG',
+			enabled: 'none'
+		},
+		{
+			id: 'Print',
+			enabled: 'none'
+		},
+		{
+			id: 'DownloadSVG',
+			enabled: 'none'
+		}
+		]
+	},
+	"legend": {},
+    "type":"pie",  // Specify your chart type here.
+    "series":[  // Insert your series data here.
+"""
+)
+print ('{ "values": ['+str(mi_balance.totalIngresos(user_id,fecha_inicial,fecha_final))+'], "text":"ingresos", "backgroundColor":"#084B8A"},')
+print('{ "values": ['+str(mi_balance.totalGastos(user_id,fecha_inicial,fecha_final))+'], "text":"gastos", "backgroundColor":"#FF8000"}')
 print ("""
-	</table>
+    ]
+  };
+  zingchart.render({ // Render Method[3]
+    id:'chartDiv',
+    data:chartData,
+    height:400,
+    width:400
+  });
+</script>
+</body>
+</html>
 """
 )

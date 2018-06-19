@@ -33,6 +33,7 @@ print("""
 	<html>
 	<head>
 	<title>BUDGETSOFT Principal</title>
+	<script src="zingchart.min.js"></script>
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" >
 	<link href="estilo.css" rel="stylesheet" type="text/css" media="screen">
 	</head>	
@@ -95,10 +96,61 @@ print('<tr><th>Balance del mes</th></tr>')
 print('<tr><td>')
 print(mi_balance.obtenerBalance(id_usuario,mes + '-01',hoy))		
 print('</td></tr>')
-		
+
+#Grafico de pie
 print("""
-	</div>
-	</body>
-    </html>
+<br><br><br>	
+</div>
+<div id ='chartDiv'></div>
+<script>
+  var chartData={
+	"gui": {
+		behaviors: [
+		{
+			id: 'DownloadPDF',
+			enabled: 'none'
+		},
+		{
+			id: 'Reload',
+			enabled: 'none'
+		},
+		{
+			id: 'ViewSource',
+			enabled: 'none'
+		},
+		{
+			id: 'SaveAsImagePNG',
+			enabled: 'none'
+		},
+		{
+			id: 'Print',
+			enabled: 'none'
+		},
+		{
+			id: 'DownloadSVG',
+			enabled: 'none'
+		}
+		]
+	},
+	"legend": {},
+    "type":"pie",  // Specify your chart type here.
+    "series":[  // Insert your series data here.
 """
-)  
+)
+print ('{ "values": ['+str(mi_balance.totalIngresos(id_usuario,mes + '-01',hoy))+'], "text":"ingresos", "backgroundColor":"#084B8A"},')
+print('{ "values": ['+str(mi_balance.totalGastos(id_usuario,mes + '-01',hoy))+'], "text":"gastos", "backgroundColor":"#FF8000"}')
+print ("""
+    ]
+  };
+  zingchart.render({ // Render Method[3]
+    id:'chartDiv',
+    data:chartData,
+    height:400,
+    width:400
+  });
+</script>
+</body>
+</html>
+"""
+)
+ 
