@@ -4,6 +4,7 @@ import cgitb; cgitb.enable()
 import datetime
 from controlador_usuarios import * #conexion y funciones con la tabla usuarios
 from controlador_balance import * #para calcular balances entre ingresos y gastos
+from controlador_gastos import * #conexion y funciones con la tabla gastos
 
 print("Content-Type: text/html\n")
 
@@ -35,7 +36,7 @@ print("""
 	<title>BUDGETSOFT Principal</title>
 	<script src="zingchart.min.js"></script>
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" >
-	<link href="estilo.css" rel="stylesheet" type="text/css" media="screen">
+	<link href="estilos_grafico.css" rel="stylesheet" type="text/css" media="screen">
 	</head>	
 
 """
@@ -81,14 +82,20 @@ print ("""
 )		
 
 #Mensaje de bienvenida
-print ("""
-	
+print ("""	
 	<div id="panel2">
 		<h2>Bienvenido, 
 """
 )
 print(nombre + '.</h2>')
 
+
+#Grafico de pie
+print("""
+<br>
+<div id="grafico">
+	<h2>Balance del mes</h2>		
+""")
 #Se muestra el balance de este mes
 print('<br>')
 print('<TABLE BORDER=0>')
@@ -96,12 +103,46 @@ print('<tr><th>Balance del mes</th></tr>')
 print('<tr><td>')
 print(mi_balance.obtenerBalance(id_usuario,mes + '-01',hoy))		
 print('</td></tr>')
+print('</table>')
+print('</div>')
 
-#Grafico de pie
+
+#Se muestran los gastos del dia
+print ("""
+	<div id='tabla_resultados'>
+	<h2>Gastos de hoy</h2>
+	<br>
+	<table border=1>
+	<tr>
+	<th>Monto</th>
+	<th>Categoria</th>
+	<th>Fecha</th>
+	<th>Descripcion</th>
+	</tr>
+"""
+)
+
+#Objeto controlador de la tabla gastos
+tabla_gastos = ControladorGastos()
+#Buscamos los gastos del usuario
+datos = tabla_gastos.verGastos(id_usuario,hoy,hoy)
+
+#Se imprime la tabla de resultados
+for result in datos:
+	resultado= result.fetchall()
+	for registro in resultado:
+		print('<tr>')
+		print('<td>' + registro[1] + '</td>')
+		print('<td>' + registro[3] + '</td>')
+		print('<td>' + registro[4] + '</td>')
+		print('<td>' + registro[5] + '</td>')
+		print('</tr>')
+print('</table>')
+print('</div>')
+
+#Funcion que grafica el grafico de pie
 print("""
-<br><br><br>	
 </div>
-<div id ='chartDiv'></div>
 <script>
   var chartData={
 	"gui": {
@@ -143,10 +184,10 @@ print ("""
     ]
   };
   zingchart.render({ // Render Method[3]
-    id:'chartDiv',
+    id:'grafico',
     data:chartData,
-    height:400,
-    width:400
+    height:300,
+    width:300
   });
 </script>
 </body>

@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.8.0.1
+-- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-06-2018 a las 20:21:48
--- Versión del servidor: 10.1.10-MariaDB
--- Versión de PHP: 5.6.19
+-- Tiempo de generación: 21-06-2018 a las 16:59:23
+-- Versión del servidor: 10.1.32-MariaDB
+-- Versión de PHP: 7.2.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -209,12 +211,57 @@ CREATE TABLE `gastos` (
 --
 
 INSERT INTO `gastos` (`id`, `id_usuario`, `id_categoria`, `monto`, `fecha`, `descripcion`) VALUES
-(1, 1, 1, 10, '2018-05-16', 'Sandwich'),
-(2, 1, 2, 9, '2018-05-23', 'Taxi'),
-(5, 1, 5, 45, '2018-05-09', 'Camisa negra'),
-(6, 1, 6, 15, '2018-05-31', 'Paracetamol'),
-(7, 1, 7, 50, '2018-05-01', 'Noche de cine'),
-(8, 1, 8, 30, '2018-05-26', 'Cepillos de dientes');
+(11, 1, 1, 5, '2018-06-01', 'desayuno'),
+(12, 1, 2, 10, '2018-06-01', 'taxi'),
+(13, 1, 1, 5, '2018-06-02', 'desayuno'),
+(14, 1, 1, 15, '2018-06-01', 'Almuerzo con los profesores'),
+(15, 1, 1, 40, '2018-06-01', 'Cena'),
+(16, 1, 1, 7, '2018-06-02', 'Almuerzo'),
+(17, 1, 2, 100, '2018-06-02', 'Gasolina'),
+(18, 1, 3, 250, '2018-06-03', 'Compras de la semana'),
+(19, 1, 8, 30, '2018-06-03', 'utensilios de la semana'),
+(20, 1, 7, 4, '2018-06-04', 'Cigarrillos'),
+(21, 1, 4, 100, '2018-06-05', 'Cuenta de luz'),
+(22, 1, 4, 95, '2018-06-05', 'Cuenta de Agua'),
+(23, 1, 6, 15, '2018-06-05', 'Pastillas para la gripe (hija)'),
+(24, 1, 6, 60, '2018-06-05', 'Cuenta del medico'),
+(25, 1, 1, 7, '2018-06-06', 'Desayuno'),
+(26, 1, 7, 9, '2018-06-09', 'Juego para movil (hija)'),
+(27, 1, 1, 7, '2018-06-06', 'Almuerzo'),
+(28, 1, 5, 30, '2018-06-07', 'Medias nuevas (yo)'),
+(29, 1, 8, 50, '2018-06-10', 'Perfume nuevo'),
+(30, 1, 1, 20, '2018-06-09', 'Desayuno con empresarios de zapaterias'),
+(31, 1, 1, 50, '2018-06-09', 'Almuerzo con ejecutivos de la UCSM'),
+(32, 1, 3, 233, '2018-06-10', 'Compras de la semana'),
+(33, 1, 8, 33, '2018-06-10', 'utensilios de la semana'),
+(34, 1, 9, 19, '2018-06-11', 'Libro de mano'),
+(35, 1, 7, 5, '2018-06-11', 'Cigarrillos'),
+(36, 1, 1, 7, '2018-06-13', 'desayuno'),
+(37, 1, 7, 3, '2018-06-12', 'Cigarrillos'),
+(38, 1, 7, 7, '2018-06-13', 'Cigarrillos'),
+(39, 1, 8, 120, '2018-06-14', 'Maquina de afeitar LG'),
+(40, 1, 1, 8, '2018-06-13', 'Almuerzo'),
+(41, 1, 1, 7, '2018-06-14', 'desayuno'),
+(42, 1, 1, 8, '2018-06-14', 'Almuerzo'),
+(44, 1, 1, 50, '2018-06-14', 'Pequena cena familiar'),
+(45, 1, 1, 7, '2018-06-15', 'desayuno de emergencia en la UCSP'),
+(46, 1, 1, 2, '2018-06-15', 'Refresco'),
+(47, 1, 1, 3, '2018-06-15', 'Pastel para uno'),
+(48, 1, 1, 8, '2018-06-15', 'Almuerzo'),
+(49, 1, 5, 20, '2018-06-16', 'Corbata nueva (Provisional)'),
+(50, 1, 1, 5, '2018-06-16', 'Desayuno'),
+(51, 1, 1, 7, '2018-06-16', 'Almuerzo'),
+(52, 1, 3, 248, '2018-06-17', 'Compras de la semana'),
+(53, 1, 1, 80, '2018-06-17', 'Almuerzo en familia'),
+(54, 1, 8, 34, '2018-06-17', 'utensilios de la semana'),
+(55, 1, 7, 2, '2018-06-18', 'Cigarrillos'),
+(56, 1, 4, 130, '2018-06-18', 'SOAT'),
+(57, 1, 1, 6, '2018-06-20', 'Desayuno'),
+(58, 1, 1, 25, '2018-06-19', 'Cafe instantaneo (de buena calidad)'),
+(59, 1, 1, 8, '2018-06-20', 'Almuerzo'),
+(60, 1, 1, 7, '2018-06-21', 'desayuno'),
+(61, 1, 7, 5, '2018-06-18', 'Cigarrillos'),
+(62, 1, 1, 10, '2018-06-21', 'Almuerzo');
 
 -- --------------------------------------------------------
 
@@ -235,10 +282,17 @@ CREATE TABLE `ingresos` (
 --
 
 INSERT INTO `ingresos` (`id`, `id_usuario`, `monto`, `fecha`, `descripcion`) VALUES
-(1, 1, 1500, '2018-05-15', 'Sueldo'),
+(1, 1, 1500, '2018-05-08', 'Sueldo'),
 (2, 1, 300, '2018-05-18', 'Bingo'),
 (3, 1, 10, '2018-05-04', 'Billete en la calle'),
-(4, 1, 1, '2018-05-31', 'Combi');
+(11, 1, 1500, '2018-05-23', 'sueldo'),
+(12, 1, 200, '2018-06-05', 'Ingreso de Victor (me debia dinero)'),
+(14, 1, 25, '2018-06-12', 'pequena loteria'),
+(15, 1, 1500, '2018-06-08', 'sueldo'),
+(16, 1, 300, '2018-06-09', 'Bono por el dia del padre'),
+(17, 1, 6500, '2018-05-01', 'monto hasta el momento'),
+(18, 1, 2000, '2018-05-16', 'sueldo de mi esposa'),
+(19, 1, 2000, '2018-06-16', 'sueldo de mi esposa');
 
 -- --------------------------------------------------------
 
@@ -261,7 +315,11 @@ CREATE TABLE `metas` (
 --
 
 INSERT INTO `metas` (`id`, `id_usuario`, `nombre`, `monto`, `inicio`, `final`, `descripcion`) VALUES
-(1, 1, 'Televisor', 2000, '2018-01-01', '2018-12-12', 'Televisor para ver el mundial');
+(4, 1, 'consola para los nin', 1800, '2018-06-18', '2018-12-13', 'se lo merecen'),
+(5, 1, 'Regalo para mi hija', 50, '2018-06-18', '2018-08-08', 'un buen libro'),
+(6, 1, 'Television para el m', 2000, '2018-04-04', '2018-06-30', 'voy a disfrutarla'),
+(7, 1, 'nuevo estante para l', 400, '2018-09-13', '2019-03-20', 'necesito uno nuevo'),
+(8, 1, 'Corredora', 2000, '2018-06-19', '2019-12-24', 'dejare de fumar el martes que viene');
 
 -- --------------------------------------------------------
 
@@ -331,26 +389,31 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `categorias`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
 --
 -- AUTO_INCREMENT de la tabla `gastos`
 --
 ALTER TABLE `gastos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+
 --
 -- AUTO_INCREMENT de la tabla `ingresos`
 --
 ALTER TABLE `ingresos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
 --
 -- AUTO_INCREMENT de la tabla `metas`
 --
 ALTER TABLE `metas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
   MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- Restricciones para tablas volcadas
 --
@@ -373,6 +436,7 @@ ALTER TABLE `ingresos`
 --
 ALTER TABLE `metas`
   ADD CONSTRAINT `metas_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -20,6 +20,7 @@ print("""
 <head>
 <title>CGI script! Python</title>
 <script src="zingchart.min.js"></script>
+<link href="estilos_grafico.css" rel="stylesheet" type="text/css" media="screen">
 </head>
 <body>
 """
@@ -28,7 +29,7 @@ print("""
 #Tabla de resultados
 print ("""
 	<br>
-	<div id ='chartDiv'>
+	<div id ='grafico'>
 	<table border=1>
 	<tr>
 	<th>Balance</th>
@@ -86,10 +87,10 @@ print ("""
     ]
   };
   zingchart.render({ // Render Method[3]
-    id:'chartDiv',
+    id:'grafico',
     data:chartData,
-    height:400,
-    width:400
+    height:300,
+    width:300
   });
 </script>
 </body>
