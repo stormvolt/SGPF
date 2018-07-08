@@ -55,13 +55,15 @@ for cursor_categorias in categorias_disponibles:
 #Buscamos los gastos del usuario
 datos = tabla_gastos.verGastos(user_id,fecha_inicial,fecha_final)
 
+total = 0 #total de los gastos mostrados
 fila = 0 #fila de la tabla
 #Se imprime la tabla de resultados
 for result in datos:
 	resultado= result.fetchall()
 	for registro in resultado:
 		print('<tr>')
-		print('<td><input type="number" min="1" id="1' + str(fila) +  '" required value="' + registro[1] + '"></td>')
+		print('<td><input type="number" min="1" step=".01" id="1' + str(fila) +  '" required value="' + registro[1] + '"></td>')
+		total = total + int(registro[1]) #calculamos el total
 		#Selector de categorias
 		print('<td><select id="2' + str(fila) +  '">')
 		for i in range(len(keys_categorias)):
@@ -94,7 +96,9 @@ for result in datos:
 		print('</tr>')		
 		fila = fila + 1
 		
-    
+#imprimimos	el total de los gastos mostrados	
+print('	<tr><th>Total: '+str(total)+'</td></tr>')
+		
 print ("""
 	</table>
 """

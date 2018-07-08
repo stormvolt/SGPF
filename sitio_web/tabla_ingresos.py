@@ -41,13 +41,15 @@ tabla_ingresos = ControladorIngresos()
 #Buscamos los ingresos del usuario
 datos = tabla_ingresos.verIngresos(user_id,fecha_inicial,fecha_final)
 
+total = 0 #total de los ingresos mostrados
 fila = 0 #fila de la tabla
 #Se imprime la tabla de resultados
 for result in datos:
 	resultado= result.fetchall()
 	for registro in resultado:
 		print('<tr>')
-		print('<td><input type="number" min="1" id="1' + str(fila) +  '" required value="'+registro[1]+'"></td>')
+		print('<td><input type="number" min="1" step=".01" id="1' + str(fila) +  '" required value="'+registro[1]+'"></td>')
+		total = total + int(registro[1]) #calculamos el total
 		print('<td><input type="date" id="2' + str(fila) + '" required value="'+registro[2]+'"></td>')
 		print('<td><input type="text" id="3' + str(fila) +  '" required value="'+registro[3]+'"></td>')
 		#Boton para borrar registro
@@ -72,7 +74,9 @@ for result in datos:
 		print('</tr>')		
 		fila = fila + 1
 		
-    
+#imprimimos	el total de los ingresos mostrados	
+print('	<tr><th>Total: '+str(total)+'</td></tr>')
+		
 print ("""
 	</table>
 """

@@ -174,12 +174,12 @@ print("""
 		]
 	},
 	"legend": {},
-    "type":"pie",  // Specify your chart type here.
+    "type":"ring",  // Specify your chart type here.
     "series":[  // Insert your series data here.
 """
 )
 print ('{ "values": ['+str(mi_balance.totalIngresos(id_usuario,mes + '-01',hoy))+'], "text":"ingresos", "backgroundColor":"#084B8A"},')
-print('{ "values": ['+str(mi_balance.totalGastos(id_usuario,mes + '-01',hoy))+'], "text":"gastos", "backgroundColor":"#FF8000"}')
+print('{ "values": ['+str(mi_balance.totalGastos(id_usuario,mes + '-01',hoy))+'], "text":"gastos", "backgroundColor":"#99CC33"}')
 print ("""
     ]
   };

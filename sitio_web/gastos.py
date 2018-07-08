@@ -150,12 +150,12 @@ hoy = hoy.isoformat()
 mes = hoy[:7]
 hoy = hoy[:10] 
 
-#Por defecto se buscan los gastos de este mes
+#Por defecto se buscan los gastos de hoy
 print('<b>Desde: </b>')
 if(fecha_inicial!='empty'):
 	print('<input type=date name=fecha_inicial id=fecha_inicial required value="' + fecha_inicial + '">')
 else:
-	print('<input type=date name=fecha_inicial id=fecha_inicial required value="' + mes + '-01' + '">')
+	print('<input type=date name=fecha_inicial id=fecha_inicial required value="' + hoy + '">')
 print('<b> Hasta: </b>')
 if(fecha_final!='empty'):
 	print('<input type=date name=fecha_final id=fecha_final required value="' + fecha_final + '">')
@@ -177,7 +177,7 @@ print(sesion + '" method="post">')
 print('<input type="hidden" name="accion" value="insertar">')
 print('<TABLE BORDER=0>')
 print('<TR>')
-print('<TD><input type="number"  name="monto" placeholder="Monto" min="1" autocomplete="off" required></TD> ')
+print('<TD><input type="number"  name="monto" placeholder="Monto" min="1" step=".01" autocomplete="off" required></TD> ')
 #Selector de categorias
 print('<TD><select name="id_categoria" form="agregar_gasto">')
 for cursor_categorias in categorias_disponibles:
@@ -186,7 +186,7 @@ for cursor_categorias in categorias_disponibles:
 		print('<option value="' + fila_categoria[0] + '">' + fila_categoria[1] + '</option>')
 print('</select></TD>')
 print('<TD><input type="date"  name="fecha" required value="' + hoy + '"></TD> ')
-print('<TD><input type="text"  name="descripcion" placeholder="Descripcion" size="50" required></TD> ')
+print('<TD><input type="text"  name="descripcion" placeholder="Descripcion" autocomplete="off" size="50" required></TD> ')
 print('<TD><input type="submit" value="Agregar gasto"></TD>')
 print('</form>')
 print('</TR>')
