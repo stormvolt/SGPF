@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0.1
--- https://www.phpmyadmin.net/
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-06-2018 a las 16:59:23
--- Versión del servidor: 10.1.32-MariaDB
--- Versión de PHP: 7.2.5
+-- Tiempo de generación: 08-07-2018 a las 05:29:53
+-- Versión del servidor: 10.1.10-MariaDB
+-- Versión de PHP: 5.6.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -45,16 +43,15 @@ VALUES (null,
         my_fecha,
         descrip)$$
 
-CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `agregarMeta` (IN `user_id` INT(11), IN `my_nombre` VARCHAR(20), IN `my_monto` DOUBLE, IN `fecha_ini` DATE, IN `fecha_fin` DATE, IN `descrip` VARCHAR(50))  MODIFIES SQL DATA
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `agregarMeta` (IN `user_id` INT(11), IN `my_nombre` VARCHAR(20), IN `my_monto` DOUBLE, IN `fecha_ini` DATE, IN `fecha_fin` DATE)  MODIFIES SQL DATA
 INSERT INTO metas
-(id,id_usuario,nombre,monto,inicio,final,descripcion)
+(id,id_usuario,nombre,monto,inicio,final)
 VALUES (null,
         user_id,
         my_nombre,
         my_monto,
         fecha_ini,
-        fecha_fin,
-        descrip)$$
+        fecha_fin)$$
 
 CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `agregarUsuario` (IN `my_user` VARCHAR(20), IN `my_pass` VARCHAR(20), IN `my_name` VARCHAR(50), IN `my_email` VARCHAR(50))  MODIFIES SQL DATA
 INSERT INTO usuarios
@@ -79,7 +76,7 @@ WHERE id = id_meta$$
 
 CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `cargarMetas` (IN `user_id` INT(11))  READS SQL DATA
 SELECT
-	id, nombre, monto, inicio, final, descripcion
+	id, nombre, monto, inicio, final
         FROM
             metas
         WHERE
@@ -122,9 +119,9 @@ UPDATE ingresos
 SET monto=my_monto, fecha=my_date, descripcion=descrip
 WHERE id=id_ingreso$$
 
-CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `modificarMeta` (IN `id_meta` INT(11), IN `my_nombre` VARCHAR(20), IN `my_monto` DOUBLE, IN `fecha_ini` DATE, IN `fecha_fin` DATE, IN `descrip` VARCHAR(50))  MODIFIES SQL DATA
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `modificarMeta` (IN `id_meta` INT(11), IN `my_nombre` VARCHAR(20), IN `my_monto` DOUBLE, IN `fecha_ini` DATE, IN `fecha_fin` DATE)  MODIFIES SQL DATA
 UPDATE metas
-SET nombre=my_nombre, monto=my_monto, inicio=fecha_ini, final=fecha_fin, descripcion=descrip
+SET nombre=my_nombre, monto=my_monto, inicio=fecha_ini, final=fecha_fin
 WHERE id=id_meta$$
 
 CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `requerirInformacionUsuario` (IN `my_user` VARCHAR(20))  READS SQL DATA
@@ -292,7 +289,8 @@ INSERT INTO `ingresos` (`id`, `id_usuario`, `monto`, `fecha`, `descripcion`) VAL
 (16, 1, 300, '2018-06-09', 'Bono por el dia del padre'),
 (17, 1, 6500, '2018-05-01', 'monto hasta el momento'),
 (18, 1, 2000, '2018-05-16', 'sueldo de mi esposa'),
-(19, 1, 2000, '2018-06-16', 'sueldo de mi esposa');
+(19, 1, 2000, '2018-06-16', 'sueldo de mi esposa'),
+(20, 1, 300, '2018-07-07', 'Sueldo');
 
 -- --------------------------------------------------------
 
@@ -306,20 +304,20 @@ CREATE TABLE `metas` (
   `nombre` varchar(20) NOT NULL,
   `monto` double NOT NULL,
   `inicio` date NOT NULL,
-  `final` date NOT NULL,
-  `descripcion` varchar(50) DEFAULT NULL
+  `final` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `metas`
 --
 
-INSERT INTO `metas` (`id`, `id_usuario`, `nombre`, `monto`, `inicio`, `final`, `descripcion`) VALUES
-(4, 1, 'consola para los nin', 1800, '2018-06-18', '2018-12-13', 'se lo merecen'),
-(5, 1, 'Regalo para mi hija', 50, '2018-06-18', '2018-08-08', 'un buen libro'),
-(6, 1, 'Television para el m', 2000, '2018-04-04', '2018-06-30', 'voy a disfrutarla'),
-(7, 1, 'nuevo estante para l', 400, '2018-09-13', '2019-03-20', 'necesito uno nuevo'),
-(8, 1, 'Corredora', 2000, '2018-06-19', '2019-12-24', 'dejare de fumar el martes que viene');
+INSERT INTO `metas` (`id`, `id_usuario`, `nombre`, `monto`, `inicio`, `final`) VALUES
+(4, 1, 'consola para los nin', 1800, '2018-06-18', '2018-12-13'),
+(5, 1, 'Regalo para mi hija', 50, '2018-06-18', '2018-08-08'),
+(6, 1, 'Television para el m', 2000, '2018-04-04', '2018-06-30'),
+(7, 1, 'nuevo estante para l', 400, '2018-09-13', '2019-03-20'),
+(8, 1, 'Corredora', 2000, '2018-06-19', '2019-12-24'),
+(9, 1, 'Nueva cocina', 500, '2018-07-01', '2018-07-31');
 
 -- --------------------------------------------------------
 
@@ -389,31 +387,26 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `categorias`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
 --
 -- AUTO_INCREMENT de la tabla `gastos`
 --
 ALTER TABLE `gastos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
-
 --
 -- AUTO_INCREMENT de la tabla `ingresos`
 --
 ALTER TABLE `ingresos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT de la tabla `metas`
 --
 ALTER TABLE `metas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
   MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
 --
 -- Restricciones para tablas volcadas
 --
@@ -436,7 +429,6 @@ ALTER TABLE `ingresos`
 --
 ALTER TABLE `metas`
   ADD CONSTRAINT `metas_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`);
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

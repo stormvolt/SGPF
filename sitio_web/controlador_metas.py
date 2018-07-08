@@ -14,10 +14,10 @@ class ControladorMetas:
 		return resultados
 		
 	#Agrega un nuevo registro a las metas del usuario
-	def agregarMeta(self, user_id, nombre, monto, fecha_ini, fecha_fin, descripcion):
+	def agregarMeta(self, user_id, nombre, monto, fecha_ini, fecha_fin):
 		db = mysql.connector.connect(user='root', password='', host='127.0.0.1', database='budgetsoft')
 		cursor = db.cursor()
-		argumentos = (user_id, nombre, monto, fecha_ini, fecha_fin, descripcion)
+		argumentos = (user_id, nombre, monto, fecha_ini, fecha_fin)
 		inserciones = cursor.callproc('agregarMeta', argumentos)
 		db.commit()
 		cursor.close()
@@ -33,10 +33,10 @@ class ControladorMetas:
 		cursor.close()
 		
 	#Modifica los campos de una meta
-	def modificarMeta(self, id, nombre, monto, fecha_ini, fecha_fin, descripcion):
+	def modificarMeta(self, id, nombre, monto, fecha_ini, fecha_fin):
 		db = mysql.connector.connect(user='root', password='', host='127.0.0.1', database='budgetsoft')
 		cursor = db.cursor()
-		argumentos = (id, nombre, monto, fecha_ini, fecha_fin, descripcion)
+		argumentos = (id, nombre, monto, fecha_ini, fecha_fin)
 		cursor.callproc('modificarMeta', argumentos)
 		db.commit()
 		cursor.close()

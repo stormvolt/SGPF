@@ -3,6 +3,7 @@ import cgi
 import cgitb; cgitb.enable()
 from controlador_usuarios import * #conexion y funciones con la tabla usuarios
 from controlador_metas import * #conexion y funciones con la tabla metas
+from controlador_balance import * #para calcular balances entre ingresos y gastos
 
 print("Content-Type: text/html\n")
 
@@ -11,7 +12,6 @@ form = cgi.FieldStorage()
 sesion = form.getfirst('Sesion','empty')
 nombre = form.getfirst('nombre','empty')
 monto = form.getfirst('monto','empty')
-descripcion = form.getfirst('descripcion','empty')
 fecha_inicial = form.getfirst('fecha_inicial','empty')
 fecha_final = form.getfirst('fecha_final','empty')
 accion = form.getfirst('accion','empty') #define si se agrega, modifica o borra un registro
@@ -23,18 +23,21 @@ tabla_usuarios = ControladorUsuarios()
 #Objeto controlador de la tabla ingresos
 tabla_metas = ControladorMetas()
 
+#Objeto controlador del balance
+mi_balance = ControladorBalance()
+
 #Obtenemos el id del usuario
 user_id = tabla_usuarios.requerirInformacionUsuario(sesion)[0][0]
 
 #Insertamos el nuevo registro
 if(accion=='insertar'):
-	tabla_metas.agregarMeta(user_id, nombre, monto, fecha_inicial, fecha_final, descripcion)
+	tabla_metas.agregarMeta(user_id, nombre, monto, fecha_inicial, fecha_final)
 #Borrar el registro
 elif(accion=='borrar'):
 	tabla_metas.borrarMeta(registro)
 #Modificar registro	
 elif(accion=='modificar'):
-	tabla_metas.modificarMeta(registro, nombre, monto, fecha_inicial, fecha_final, descripcion)
+	tabla_metas.modificarMeta(registro, nombre, monto, fecha_inicial, fecha_final)
 
 #Titulo, estilo
 print("""
@@ -101,13 +104,16 @@ print ("""
 	<th>Monto</th>
 	<th>Inicio</th>
 	<th>Final</th>
-	<th>Descripcion</th>
+	<th>Progreso</th>
 	</tr>
 """
 )
 
 #Buscamos las metas del usuario
 datos = tabla_metas.cargarMetas(user_id)
+
+#Esta variable almacena el balance calculado en el intervalo de tiempo de cada meta
+balance = 0
 
 fila = 0 #fila de la tabla
 #Se imprime la tabla de resultados
@@ -119,7 +125,9 @@ for result in datos:
 		print('<td><input type="number" min="1" step=".01" id="2' + str(fila) +  '" required value="'+registro[2]+'"></td>')
 		print('<td><input type="date" id="3' + str(fila) + '" required value="'+registro[3]+'"></td>')
 		print('<td><input type="date" id="4' + str(fila) + '" required value="'+registro[4]+'"></td>')
-		print('<td><input type="text" id="5' + str(fila) +  '" required value="'+registro[5]+'"></td>')
+		#progreso de la meta
+		balance = mi_balance.obtenerBalance(user_id,registro[3],registro[4])
+		print('<td><progress value="' + str(balance) + '" max="' + registro[2] + '"</td>')
 		#Boton para borrar registro
 		print('<td><form action="metas.py?Sesion=')
 		print(sesion + '" method="post">')
@@ -135,7 +143,6 @@ for result in datos:
 		print('<input type="hidden" id="monto' + str(fila)  + '" name="monto" required value="">')
 		print('<input type="hidden" id="fecha_inicial' + str(fila)  + '" name="fecha_inicial" required value="">')
 		print('<input type="hidden" id="fecha_final' + str(fila)  + '" name="fecha_final" required value="">')
-		print('<input type="hidden" id="descripcion' + str(fila)  + '" name="descripcion" required value="">')		
 		print('<input type="submit" onclick="actualizar('+ str(fila) +')" value="Editar"></form></td>')
 		print('</tr>')		
 		fila = fila + 1
@@ -155,7 +162,6 @@ function actualizar(fila)
 	document.getElementById("monto"+fila).value = document.getElementById("2"+fila).value;
 	document.getElementById("fecha_inicial"+fila).value = document.getElementById("3"+fila).value;
 	document.getElementById("fecha_final"+fila).value = document.getElementById("4"+fila).value;
-	document.getElementById("descripcion"+fila).value = document.getElementById("5"+fila).value;
 }
 </script>
 """
@@ -173,7 +179,6 @@ print('<TD><input type="text"  name="nombre" placeholder="Nombre" autocomplete="
 print('<TD><input type="number"  name="monto" placeholder="Monto" min="1" step=".01" autocomplete="off" required></TD> ')
 print('<TD><input type="date"  name="fecha_inicial" required></TD>')
 print('<TD><input type="date"  name="fecha_final" required></TD>')
-print('<TD><input type="text"  name="descripcion" autocomplete="off" placeholder="Descripcion" required></TD> ')
 print('<TD><input type="submit" value="Agregar meta"></TD>')
 print('</form>')
 print('</TR>')
