@@ -63,7 +63,7 @@ for result in datos:
 	for registro in resultado:
 		print('<tr>')
 		print('<td><input type="number" min="1" step=".01" id="1' + str(fila) +  '" required value="' + registro[1] + '"></td>')
-		total = total + int(registro[1]) #calculamos el total
+		total = total + float(registro[1]) #calculamos el total
 		#Selector de categorias
 		print('<td><select id="2' + str(fila) +  '">')
 		for i in range(len(keys_categorias)):

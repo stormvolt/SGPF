@@ -49,7 +49,7 @@ for result in datos:
 	for registro in resultado:
 		print('<tr>')
 		print('<td><input type="number" min="1" step=".01" id="1' + str(fila) +  '" required value="'+registro[1]+'"></td>')
-		total = total + int(registro[1]) #calculamos el total
+		total = total + float(registro[1]) #calculamos el total
 		print('<td><input type="date" id="2' + str(fila) + '" required value="'+registro[2]+'"></td>')
 		print('<td><input type="text" id="3' + str(fila) +  '" required value="'+registro[3]+'"></td>')
 		#Boton para borrar registro
