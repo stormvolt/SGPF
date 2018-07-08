@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-07-2018 a las 05:29:53
+-- Tiempo de generación: 08-07-2018 a las 21:58:10
 -- Versión del servidor: 10.1.10-MariaDB
 -- Versión de PHP: 5.6.19
 
@@ -150,6 +150,19 @@ SELECT
         WHERE
             id_usuario=user_id AND fecha BETWEEN fecha_ini AND fecha_fin
         ORDER BY fecha ASC$$
+
+CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `verGastosGrafico` (IN `user_id` INT(11), IN `fecha_ini` DATE, IN `fecha_fin` DATE)  READS SQL DATA
+SELECT 
+	categorias.nombre, COALESCE(t1.monto, 0 )
+	FROM
+    categorias
+    LEFT JOIN
+    (
+        SELECT id_categoria,monto FROM gastos
+        WHERE id_usuario=user_id AND fecha BETWEEN fecha_ini AND fecha_fin
+        GROUP BY id_categoria
+    ) AS t1
+	ON categorias.id = t1.id_categoria$$
 
 CREATE DEFINER=`root`@`127.0.0.1` PROCEDURE `verIngresos` (IN `user_id` INT(11), IN `fecha_ini` DATE, IN `fecha_fin` DATE)  READS SQL DATA
 SELECT

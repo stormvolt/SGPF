@@ -51,7 +51,7 @@ print("""
 	<head>
 	<title>BUDGETSOFT Gastos</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" >
-	<link href="estilo.css" rel="stylesheet" type="text/css" media="screen">
+	<link href="formato.css" rel="stylesheet" type="text/css" media="screen">
 """
 )    	
 

@@ -3,7 +3,7 @@ import mysql.connector
 #ACTUA COMO INTERMEDIARIO PARA LLAMAR A LAS FUNCIONES DE LA TABLA GASTOS
 class ControladorGastos:
 
-	#Recolecta todos los tgastos de un usuario en un intervalo determinado
+	#Recolecta todos los gastos de un usuario en un intervalo determinado
 	def verGastos(self, user_id, fecha_ini, fecha_fin):
 		db = mysql.connector.connect(user='root', password='', host='127.0.0.1', database='budgetsoft')
 		cursor = db.cursor()
@@ -40,3 +40,13 @@ class ControladorGastos:
 		cursor.callproc('modificarGastos', argumentos)
 		db.commit()
 		cursor.close()
+		
+	#Recolecta todos los gastos de un usuario en un intervalo determinado, filtrados por categoria
+	def verGastosGrafico(self, user_id, fecha_ini, fecha_fin):
+		db = mysql.connector.connect(user='root', password='', host='127.0.0.1', database='budgetsoft')
+		cursor = db.cursor()
+		argumentos = (user_id, fecha_ini, fecha_fin)
+		cursor.callproc('verGastosGrafico', argumentos)
+		resultados = cursor.stored_results()
+		cursor.close()
+		return resultados

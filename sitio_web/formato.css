@@ -19,14 +19,44 @@ body {
   background-image:url(images/fondo.jpg);
 }
 
+body #grafico{
+    padding: 5px 15px 2px 10px;
+    width: 300px;
+	border: solid 3px black;
+	text-align: center;
+	background-image:url(images/tabla.jpg);
+}
+
+body #grafico_categorias{
+	position: absolute;
+	padding: 10px 10px 50px 100px;
+	top: 220px;
+    width: 555px;
+	margin-left: 330px;
+	border: solid 3px black;
+	text-align: center;
+	background-image:url(images/tabla.jpg);	
+}
+
+body #tabla_resultados{
+	position: absolute;
+	top: 195px;
+    width: 664px;
+	margin-left: 330px;
+	border: solid 3px black;
+	text-align: center;
+	background-image:url(images/tabla.jpg);	
+}
+
+
 body #sidebar{
     position: absolute;
 	top: 110px;
     padding: 5px 15px 2px 10px;
     height: 100%;
     width: 300px;
-	background-color:#000000;
-	color: #82EB59;
+	background-color:#347C71;
+	color: #FFFFFF;
 }
 
 #caraadmin{

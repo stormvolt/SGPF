@@ -36,7 +36,7 @@ print("""
 	<title>BUDGETSOFT Principal</title>
 	<script src="zingchart.min.js"></script>
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" >
-	<link href="estilos_grafico.css" rel="stylesheet" type="text/css" media="screen">
+	<link href="formato.css" rel="stylesheet" type="text/css" media="screen">
 	</head>	
 
 """
@@ -127,6 +127,9 @@ tabla_gastos = ControladorGastos()
 #Buscamos los gastos del usuario
 datos = tabla_gastos.verGastos(id_usuario,hoy,hoy)
 
+#numero de gastos de hoy
+num_gastos = 0
+
 #Se imprime la tabla de resultados
 for result in datos:
 	resultado= result.fetchall()
@@ -137,8 +140,15 @@ for result in datos:
 		print('<td>' + registro[4] + '</td>')
 		print('<td>' + registro[5] + '</td>')
 		print('</tr>')
+		num_gastos = num_gastos + 1
 print('</table>')
+
+#Recordatorio de ingresar gastos
+if(num_gastos==0):
+	print('<br><br>Te recordamos que hoy no has ingresado gastos<br><br>')
+
 print('</div>')
+
 
 #Funcion que grafica el grafico de pie
 print("""
